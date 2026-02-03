@@ -22,7 +22,7 @@
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -55,6 +55,20 @@
             border-radius: 20px;
             font-size: 0.9rem;
             display: inline-block;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
         }
         
         .content {
@@ -139,6 +153,24 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            background: #4b5563;
+        }
+        
         .warning {
             background: #fef3cd;
             border: 1px solid #f6e05e;
@@ -177,7 +209,21 @@
         .scenario h3 {
             color: #7c3aed;
             margin-bottom: 15px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+        }
+        
+        .scenario-content {
+            white-space: pre-line;
+            line-height: 1.7;
+            color: #374151;
+        }
+        
+        .scenario-content strong {
+            display: block;
+            color: #7c3aed;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 8px;
         }
         
         .options {
@@ -192,6 +238,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            text-align: left;
         }
         
         .option:hover {
@@ -218,7 +265,101 @@
         .tier {
             font-size: 1.5rem;
             color: #374151;
+            margin-bottom: 30px;
+        }
+        
+        .feedback-section {
+            background: #f8fafc;
+            border-left: 4px solid #7c3aed;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
             margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .feedback-title {
+            color: #7c3aed;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .question-progress {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #7c3aed;
+            font-weight: 600;
+        }
+        
+        .detailed-results {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .result-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-question {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        
+        .result-answer {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .result-feedback {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.6;
         }
         
         @media (max-width: 640px) {
@@ -233,6 +374,10 @@
             .stats {
                 grid-template-columns: 1fr;
             }
+            
+            .score {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
@@ -242,12 +387,18 @@
             <h1>AI Business Case Mastery</h1>
             <p>Enterprise Deployment Fundamentals</p>
             <div class="badge">✨ Module 1 • 2026</div>
+            <div id="progress-container" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div id="progress-text" style="margin-top: 10px; font-size: 0.9rem;"></div>
+            </div>
         </div>
         
         <div class="content">
             <div id="start-screen">
                 <div class="description">
-                    Navigate the complex landscape of AI deployment as a senior technology leader. These scenarios are drawn from real enterprise failures and successes, testing your ability to build sustainable AI business cases. Every decision challenges core executive skills: strategic thinking, risk management, regulatory compliance, and organizational transformation.
+                    Navigate the complex landscape of AI deployment as a senior technology leader. These scenarios are drawn from real enterprise failures and successes, testing your ability to build sustainable AI business cases. Every decision challenges core executive skills: strategic thinking, risk management, regulatory compliance, and organizational transformation. No theoretical frameworks—just the real challenges that separate successful AI implementations from the 80% that fail.
                 </div>
                 
                 <div class="warning">
@@ -257,7 +408,7 @@
                 <div class="stats">
                     <div class="stat-card">
                         <span class="stat-number">10</span>
-                        <div class="stat-label">Scenarios</div>
+                        <div class="stat-label">AI Scenarios</div>
                     </div>
                     <div class="stat-card">
                         <span class="stat-number">1</span>
@@ -282,12 +433,16 @@
             </div>
             
             <div id="question-screen" class="question-container">
-                <div class="scenario">
-                    <h3 id="scenario-title">Scenario Loading...</h3>
-                    <div id="scenario-content">Please wait while the scenario loads...</div>
+                <div class="question-progress" id="question-progress">
+                    Scenario 1 of 10
                 </div>
                 
-                <h2 id="question-text">Question loading...</h2>
+                <div class="scenario">
+                    <h3 id="scenario-title">Scenario Loading...</h3>
+                    <div id="scenario-content" class="scenario-content">Please wait while the scenario loads...</div>
+                </div>
+                
+                <h2 id="question-text" style="margin-bottom: 20px; color: #374151;">Question loading...</h2>
                 
                 <div id="options" class="options">
                     <!-- Options will be populated by JavaScript -->
@@ -298,17 +453,55 @@
                 <div class="score" id="final-score">0%</div>
                 <div class="tier" id="final-tier">Assessment Complete</div>
                 
-                <div style="margin-top: 30px;">
-                    <button class="btn-primary" onclick="shareResults()">
-                        Share on LinkedIn
+                <div class="feedback-section">
+                    <div class="feedback-title">💬 Mohan Simham's Assessment</div>
+                    <div id="assessment-feedback">Your personalized assessment feedback will appear here.</div>
+                </div>
+                
+                <div style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                    <button class="btn-secondary" onclick="shareResults()">
+                        📱 Share on LinkedIn
+                    </button>
+                    <button class="btn-secondary" onclick="downloadCertificate()">
+                        📜 Download Certificate
+                    </button>
+                    <button class="btn-secondary" onclick="showDetailedResults()">
+                        📊 View Detailed Analysis
                     </button>
                 </div>
                 
-                <div class="disclaimer" style="margin-top: 30px;">
+                <div class="disclaimer" style="margin-top: 40px;">
+                    <p style="margin-bottom: 10px;"><strong>Ready for Module 2?</strong> Continue the AI Business Case challenge series to master regulatory compliance and competitive strategy!</p>
                     <p><strong>© 2025 Mohan Simham. All Rights Reserved.</strong></p>
-                    <p>Connect with the creator: <a href="https://linkedin.com/in/mohansimham" style="color: #7c3aed;">LinkedIn: /mohansimham</a></p>
+                    <p>Connect with the creator: <a href="https://linkedin.com/in/mohansimham" style="color: #7c3aed; text-decoration: none;">LinkedIn: /mohansimham</a></p>
                 </div>
             </div>
+            
+            <div id="detailed-results" class="detailed-results" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #7c3aed;">Detailed Analysis</h2>
+                <div id="detailed-content">
+                    <!-- Detailed results will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LinkedIn Share Modal -->
+    <div id="linkedin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLinkedInModal()">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 20px; color: #7c3aed;">📱 Share Your Results</h2>
+            <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Share your AI business case assessment results on LinkedIn in 3 easy steps:</p>
+            <div style="background-color: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #7c3aed;">
+                <ol style="margin: 0; padding-left: 20px; line-height: 1.8; font-size: 14px; color: #374151;">
+                    <li>Click "Copy Message" below</li>
+                    <li>Open LinkedIn and create a new post</li>
+                    <li>Paste the message and publish</li>
+                </ol>
+            </div>
+            <button onclick="copyLinkedInPost()" class="btn-primary">
+                ✅ Copy Message
+            </button>
         </div>
     </div>
 
@@ -319,65 +512,311 @@
         let currentQuestion = 0;
         let answers = [];
         let userEmail = '';
+        let hasAttempted = localStorage.getItem('ai_business_case_simulation_attempted') === 'true';
         
+        // Check for reset mode
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('reset') === 'true') {
+            localStorage.removeItem('ai_business_case_simulation_attempted');
+            hasAttempted = false;
+        }
+        
+        // Complete scenarios data
         const scenarios = [
             {
                 id: 1,
-                title: "The $4 Million Watson Moment",
-                content: "You're the Chief Data Officer at MedTech Global, a Fortune 500 healthcare company. The CEO just announced a $4M investment in an AI-powered diagnostic platform, calling it 'our moonshot.' Your team's analysis shows concerning gaps: data quality issues in 60% of patient records, fragmented systems across 12 business units, and no unified data governance framework. Board expectations are sky-high after the CEO's announcement. Marketing has already promised healthcare providers 'revolutionary AI diagnostics' by Q4.",
+                title: "Q1 2024 – The $4 Million Watson Moment",
+                content: "**The Situation:**\nYou're the Chief Data Officer at MedTech Global, a Fortune 500 healthcare company. The CEO just announced a $4M investment in an AI-powered diagnostic platform, calling it \"our moonshot.\"\n\n**The Reality Check:**\nYour team's analysis shows concerning gaps: data quality issues in 60% of patient records, fragmented systems across 12 business units, and no unified data governance framework.\n\n**The Pressure:**\nBoard expectations are sky-high after the CEO's announcement. Marketing has already promised healthcare providers \"revolutionary AI diagnostics\" by Q4.\n\n**The IBM Lesson:**\nYou know IBM Watson Health's $4B failure started exactly like this—overpromising on AI capabilities before solving fundamental data and organizational challenges.\n\n**The Choice:**\nYour recommendation will determine whether this becomes a Watson-style disaster or a foundation for genuine AI transformation.",
                 question: "How do you approach this high-stakes AI business case with $4M committed and executive expectations set?",
                 options: [
                     {
                         text: "Proceed with the AI diagnostic platform as announced—find ways to make it work within the timeline",
                         points: 2,
-                        feedback: "This path leads straight to IBM Watson Health territory. Proceeding without addressing fundamental data quality issues will amplify existing problems, not solve them."
+                        feedback: "This path leads straight to IBM Watson Health territory—a $4B lesson in what happens when technology ambition outpaces organizational readiness. Proceeding without addressing fundamental data quality and governance issues is like building a skyscraper on quicksand. The AI will amplify existing data problems, not solve them. Watson Health failed because IBM tried to leapfrog infrastructure problems with sophisticated AI. The result: systems that couldn't integrate with hospital workflows and recommendations doctors couldn't trust. As CDO, your job is sustainable AI success, not temporary executive satisfaction."
                     },
                     {
                         text: "Recommend a phased approach: Phase 1 focuses on data infrastructure and governance, Phase 2 launches AI capabilities",
                         points: 10,
-                        feedback: "Exactly right. You're preventing a Watson Health repeat by tackling organizational readiness first. This approach prevents the 80% AI project failure rate."
+                        feedback: "Exactly right. You're preventing a Watson Health repeat by tackling the real challenge: organizational readiness. Successful AI deployments follow the 70-20-10 rule: 70% change management and data infrastructure, 20% integration work, 10% algorithm optimization. By Phase 1, you'll have unified data governance, cleaned datasets, and stakeholder buy-in. Phase 2's AI will actually work because it has a solid foundation. This approach may disappoint executives short-term, but it prevents the 80% AI project failure rate. Walmart's AI transformation succeeded because they spent 2 years building data infrastructure first. You're thinking like a leader who understands that sustainable AI requires organizational transformation, not just technology deployment."
                     },
                     {
                         text: "Partner with external AI consultants to fast-track the diagnostic platform development",
                         points: 4,
-                        feedback: "External consultants can accelerate development, but they can't fix your fundamental organizational challenges."
+                        feedback: "External consultants can accelerate development, but they can't fix your fundamental organizational challenges. The core problems—fragmented data, lack of governance, stakeholder alignment—require internal transformation. Consultants will build AI on top of broken systems, creating expensive technical debt. MIT research shows external AI solutions have 67% success rate vs 33% for internal builds, but only when proper data infrastructure exists first. Consultants are valuable for specific technical challenges, not foundational organizational problems. Use them strategically, not as shortcuts."
                     },
                     {
                         text: "Pilot the AI platform in one business unit to prove concept before full deployment",
                         points: 6,
-                        feedback: "Smart pilot thinking, but you're still not addressing the fundamental infrastructure problems across all business units."
+                        feedback: "Smart pilot thinking, but you're still not addressing the fundamental infrastructure problems. Even a successful pilot in one business unit won't solve data fragmentation across 12 units or create the governance framework needed for enterprise-wide deployment. Pilots work when you're testing AI capabilities with solid infrastructure. They don't work when you're trying to prove AI can overcome bad data and organizational dysfunction. The pilot will likely show some promising results, creating false confidence for full deployment without fixing underlying issues. This is how organizations get stuck in 'pilot purgatory.'"
                     }
                 ]
             },
             {
                 id: 2,
-                title: "The Regulatory Earthquake", 
-                content: "Six months into your AI infrastructure project, the EU AI Act enforcement begins. Your legal team drops a bombshell: your planned AI diagnostic platform qualifies as 'high-risk' under the new regulations. Compliance will add $2M to the project and 8 months to timeline. Your CFO is furious: 'We're already $4M in. This AI regulation is killing our ROI.' 40% of your revenue comes from European healthcare providers. Non-compliance means losing EU market access entirely.",
+                title: "Q3 2024 – The Regulatory Earthquake",
+                content: "**The Development:**\nSix months into your AI infrastructure project, the EU AI Act enforcement begins. Your legal team drops a bombshell: your planned AI diagnostic platform qualifies as \"high-risk\" under the new regulations.\n\n**The Requirements:**\n- Comprehensive technical documentation and audit trails\n- Human oversight mandates for all AI decisions\n- Data lineage tracking from source to output\n- Conformity assessments and CE marking for EU market access\n- Penalties up to €35M or 7% of global turnover for violations\n\n**The Cost Impact:**\nCompliance will add $2M to the project and 8 months to timeline. Your CFO is furious: \"We're already $4M in. This AI regulation is killing our ROI.\"\n\n**The Strategic Reality:**\n40% of your revenue comes from European healthcare providers. Non-compliance means losing EU market access entirely.\n\n**The Board Reaction:**\nSome directors suggest scrapping AI entirely: \"Maybe we're too early to this technology. Let competitors figure out compliance first.\"",
                 question: "How do you reframe the business case when regulatory compliance dramatically changes project economics?",
                 options: [
                     {
                         text: "Recommend pausing all AI initiatives until regulatory landscape stabilizes",
                         points: 3,
-                        feedback: "This is strategically dangerous. By waiting, you're ceding first-mover advantage to competitors who are learning to navigate regulatory complexity now."
+                        feedback: "This is the path of least resistance, but it's strategically dangerous. Regulation isn't going away—it's expanding. The EU AI Act is just the beginning. Other jurisdictions are developing similar frameworks, and compliance requirements will only increase. By waiting, you're ceding first-mover advantage to competitors who are learning to navigate regulatory complexity now. Companies that master AI compliance early will have sustainable competitive moats. Worst of all, you're teaching your organization to retreat from hard problems rather than solve them. That's not leadership—that's avoidance."
                     },
                     {
                         text: "Pivot to non-regulated AI applications that don't fall under high-risk categories",
                         points: 5,
-                        feedback: "'Low-risk' AI often means 'low-impact' AI. You may be avoiding both the risk and the reward by pivoting away from high-value applications."
+                        feedback: "You're finding a path of lower regulatory resistance, but potentially abandoning the highest-value AI applications. 'Low-risk' AI often means 'low-impact' AI. The reason diagnostic AI is highly regulated is because it has high stakes and high value. By pivoting away, you may be avoiding both the risk and the reward. However, this could be a smart intermediate step—build AI capabilities and compliance processes with lower-risk applications, then tackle high-risk use cases once you have regulatory expertise. The key question: Are you pivoting strategically to build capabilities, or just running from hard problems?"
                     },
                     {
                         text: "Embrace compliance as a competitive moat—invest in becoming the regulatory leader in AI healthcare",
                         points: 10,
-                        feedback: "Brilliant strategic reframing. You're turning regulatory burden into competitive advantage. Companies that master compliance first will have sustainable advantages."
+                        feedback: "Brilliant strategic reframing. You're turning regulatory burden into competitive advantage. Compliance is a moat because it's expensive and complex—exactly the kind of barrier that prevents competitors from catching up. Companies that master EU AI Act compliance first will have sustainable advantages in global markets. Regulatory expertise becomes a core capability, not just a cost center. You can eventually monetize this through compliance consulting, platform partnerships, and premium positioning. This mirrors how financial services companies turned GDPR compliance into competitive advantage—the companies that invested early dominated post-regulation markets. As CDO, you're thinking strategically about how regulatory reality shapes competitive dynamics. This is executive-level thinking."
                     },
                     {
                         text: "Develop a compliance-optional architecture that can operate in both regulated and unregulated markets",
                         points: 2,
-                        feedback: "This violates a fundamental principle: you can't build halfway compliance into AI systems. EU AI Act requirements must be baked into architecture from the ground up."
+                        feedback: "This sounds sophisticated but violates a fundamental principle: you can't build halfway compliance into AI systems. EU AI Act requirements—data lineage, human oversight, audit trails—must be baked into system architecture from the ground up. You can't add compliance as an afterthought or toggle feature. Trying to build 'compliance-optional' systems means building lowest-common-denominator AI that satisfies neither regulated nor unregulated use cases effectively. Worst case: you end up with technical debt that makes both compliance and innovation harder. Choose your regulatory strategy clearly, then build for it completely."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Q1 2025 – The ROI Reality Check",
+                content: "**The Progress:**\n12 months in, your team has built solid AI infrastructure: unified data governance, clean datasets, and EU AI Act compliance frameworks. Total investment: $6M.\n\n**The Challenge:**\nThe CFO presents a brutal analysis: \"We're $6M deep with zero revenue impact. Competitors using simple rule-based systems are outperforming us on cost and speed.\"\n\n**The Data Points:**\n- Your AI infrastructure serves 3 pilot applications\n- Rule-based competitors deploy solutions in 3 months vs your 18-month development cycles\n- Board pressure mounting: \"Are we over-engineering this AI transformation?\"\n- McKinsey research shows 80% of organizations haven't seen bottom-line EBIT impact from AI\n\n**The Competing Visions:**\nCTO: \"We're building for scale—our infrastructure will support 50+ AI applications.\"\nCEO: \"We need revenue impact NOW. Maybe we should have stayed with simpler approaches.\"\n\n**The Strategic Crossroads:**\nDo you accelerate deployment of revenue-generating AI applications, or continue building the comprehensive foundation for long-term AI transformation?",
+                question: "How do you justify continued investment when simpler alternatives are showing faster results?",
+                options: [
+                    {
+                        text: "Accelerate deployment of revenue-generating AI applications immediately, even if they use less sophisticated approaches",
+                        points: 6,
+                        feedback: "You're responding to legitimate business pressure, but potentially undermining the strategic foundation you've built. The risk: rushing to market with less sophisticated AI might deliver short-term revenue but create technical debt that limits future capabilities. You could end up with multiple point solutions that don't integrate. However, showing revenue impact is crucial for maintaining stakeholder support for the broader AI transformation. The key is choosing applications that can demonstrate value while leveraging your infrastructure investment. Consider this a strategic pivot, not a surrender—use simple applications to prove your infrastructure works, then build complexity."
+                    },
+                    {
+                        text: "Stay the course with comprehensive AI infrastructure—demonstrate long-term competitive advantages over rule-based systems",
+                        points: 8,
+                        feedback: "You're maintaining strategic discipline, but you need to communicate the differentiation more effectively. Your infrastructure investment creates capabilities competitors can't match: regulatory compliance, scalable data governance, and enterprise-grade AI architecture. These become sustainable moats. The challenge is proving near-term value while building long-term advantage. Walmart's AI transformation took 2 years of infrastructure building before showing 25-30% cost reduction—but competitors still haven't caught up. Strategic patience requires executive communication skills: help leadership understand why sustainable AI advantage requires upfront investment in organizational capabilities."
+                    },
+                    {
+                        text: "Hybrid approach: Deploy quick-win rule-based solutions while continuing AI infrastructure development in parallel",
+                        points: 4,
+                        feedback: "This seems balanced but could create the worst of both worlds: resource dilution and technical debt. Running parallel tracks means competing for the same budget, engineering talent, and executive attention. Neither initiative gets full focus, potentially leading to mediocre results in both. Worse, quick-win solutions might satisfy immediate pressure, reducing organizational commitment to the strategic AI infrastructure. You could end up trapped in short-term thinking. Sometimes strategic clarity means choosing one path and executing it well, rather than hedging with multiple approaches."
+                    },
+                    {
+                        text: "Reframe the business case around competitive positioning rather than immediate ROI—position AI as a strategic necessity",
+                        points: 10,
+                        feedback: "Exceptional strategic reframing. You're elevating the conversation from tactical ROI to strategic necessity. The best business cases for foundational technology aren't built on immediate returns—they're built on competitive survival. Just like cloud computing, AI infrastructure becomes table stakes for competing in digital markets. Your comprehensive approach means you'll be ready when AI applications mature, while competitors scramble to build infrastructure. When regulatory complexity increases, you'll have compliant systems while others face market access barriers. This is executive-level thinking: understanding that some investments are about future optionality, not immediate optimization. You're building AI readiness as a core organizational capability."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Q3 2025 – The Talent Crisis",
+                content: "**The Growth Challenge:**\nYour AI infrastructure is finally generating results—3 successful applications deployed, 15% efficiency gains in targeted processes. The board wants to scale to 20 applications by year-end.\n\n**The Reality Check:**\nYour AI team is burned out. The lead data scientist just quit for a 60% salary increase at a tech startup. Two ML engineers gave notice this week.\n\n**The Market Dynamics:**\n- AI talent costs have increased 40% in 18 months\n- 53% of organizations cite AI skill shortage as primary scaling obstacle\n- Your current team of 8 can't support 20 applications\n- Hiring timelines for senior AI talent: 6-9 months\n\n**The Competing Solutions:**\nCHRO: \"Increase AI salaries by 50% and hire aggressively—whatever it takes.\"\nCTO: \"Outsource AI development to specialized consulting firms.\"\nCEO: \"Can't we just buy AI platforms instead of building everything?\"\n\n**The Strategic Dilemma:**\nScale through expensive talent acquisition, outsource core capabilities, or pivot to platform-based approaches?",
+                question: "How do you solve the AI talent bottleneck when scaling from 3 to 20 applications?",
+                options: [
+                    {
+                        text: "Invest heavily in talent acquisition—increase salaries 50% and hire aggressively to build world-class internal AI team",
+                        points: 6,
+                        feedback: "You're solving the immediate problem but potentially creating long-term financial strain. While internal AI talent provides maximum control and competitive differentiation, the escalating cost structure might not be sustainable. If market talent costs continue rising 20-40% annually, you're committing to an expensive arms race. That said, core AI capabilities are increasingly strategic. Companies with strong internal AI teams have more flexibility and can develop proprietary advantages competitors can't buy. The key question: Is AI central enough to your strategy to justify premium talent costs? If yes, this investment makes sense. If no, consider other approaches."
+                    },
+                    {
+                        text: "Hybrid model: Build core AI team internally while outsourcing specific application development to specialized firms",
+                        points: 10,
+                        feedback: "Smart strategic balance. You're maintaining control of core capabilities while leveraging external expertise for scaling. Keep strategic AI architecture, data governance, and high-value applications internal. Outsource routine ML development, specific use case implementations, and overflow work to trusted partners. This approach provides flexibility—scale up external resources during growth periods, scale down during maintenance phases. It also exposes your team to external best practices without losing institutional knowledge. MIT research shows this hybrid approach has 67% success rate vs 33% for purely internal development, mainly because it combines internal strategy with external execution speed."
+                    },
+                    {
+                        text: "Pivot to AI platform strategy—buy enterprise AI platforms rather than building custom solutions",
+                        points: 7,
+                        feedback: "You're choosing speed and predictability over differentiation—a reasonable trade-off depending on your strategic goals. AI platforms can accelerate deployment and reduce talent requirements, but they limit customization and create vendor dependencies. Your competitive advantage shifts from unique AI capabilities to implementation excellence. The risk: if competitors use similar platforms, your AI becomes commoditized. The opportunity: faster time-to-value and lower ongoing talent costs. This works well for organizations where AI is important but not core to competitive strategy. If AI is central to your value proposition, platform approaches might limit upside potential."
+                    },
+                    {
+                        text: "Upskill existing technical staff through intensive AI training programs rather than hiring externally",
+                        points: 4,
+                        feedback: "Upskilling is cost-effective but may not solve immediate scaling challenges. Training existing staff takes 12-18 months to develop AI expertise. Meanwhile, business demands for AI applications continue growing. You risk falling behind during the training period. Also, upskilled staff often become attractive to external recruiters—you might train people who then leave for higher salaries elsewhere. Upskilling works best as a long-term capability building strategy, not a short-term scaling solution. Consider it complementary to other approaches, not the primary solution."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "Q1 2026 – The Governance Crisis",
+                content: "**The Success Story:**\nYour AI transformation is working. 18 applications deployed, $12M in documented cost savings, and recognition as an industry leader in AI healthcare.\n\n**The Incident:**\nAn AI diagnostic recommendation system flags 15% more cases as \"high-risk\" for minority patients compared to similar cases in white patients. A data scientist discovers this bias during routine model audits.\n\n**The Implications:**\n- Potential discrimination lawsuits from affected patients\n- Regulatory investigation under EU AI Act non-discrimination requirements\n- Media coverage: \"MedTech Global's AI System Shows Racial Bias\"\n- Internal analysis confirms: training data reflected historical healthcare disparities\n\n**The Stakeholder Reactions:**\nLegal: \"Shut down the system immediately to limit liability exposure.\"\nChief Medical Officer: \"We need to understand if this improved or worsened existing care disparities.\"\nCEO: \"How did our governance processes miss this? What else don't we know?\"\n\n**The Strategic Reality:**\nHow you handle this crisis will define your organization's AI future and industry reputation.",
+                question: "How do you manage this AI bias crisis while preserving the business value of your AI transformation?",
+                options: [
+                    {
+                        text: "Immediately shut down all AI diagnostic systems pending comprehensive bias audits across all applications",
+                        points: 4,
+                        feedback: "You're prioritizing risk mitigation, but potentially overreacting in ways that could destroy stakeholder confidence in your entire AI program. Shutting down all systems suggests your governance processes are fundamentally broken, not that you found and are fixing a specific issue. This could trigger broader regulatory scrutiny and competitive disadvantage. The better approach: demonstrate that your governance processes work by identifying, analyzing, and fixing the specific issue while maintaining operations of unaffected systems. Crises test whether you have mature governance or are just hoping for the best. Mature governance means systematic response, not panic shutdowns."
+                    },
+                    {
+                        text: "Keep systems operational but add human oversight requirements for all high-risk diagnoses while conducting bias analysis",
+                        points: 8,
+                        feedback: "Good balanced approach. You're addressing the immediate risk while preserving business value and demonstrating responsible AI governance. Adding human oversight for high-risk cases creates a safety net while you investigate root causes. This shows regulators and stakeholders that you can respond quickly without abandoning AI entirely. The key is transparent communication: what you found, how you're investigating, what steps you're taking. This demonstrates that your governance processes work as intended—they detect problems and trigger appropriate responses. This approach maintains stakeholder confidence while fixing the underlying issue. It's executive-level crisis management."
+                    },
+                    {
+                        text: "Conduct comprehensive analysis to determine if the AI bias represents improvement or deterioration from historical human decision-making patterns",
+                        points: 10,
+                        feedback: "Outstanding. You're reframing this from 'AI failure' to 'healthcare equity improvement opportunity.' The crucial question isn't whether AI has bias—all systems reflect their training data. The question is whether AI bias is better or worse than human bias, and whether you can improve both. If historical healthcare showed 20% disparities and AI shows 15%, that's actually progress. If AI matches human patterns exactly, you have opportunity for algorithmic improvement. This approach demonstrates sophisticated understanding of AI governance: the goal isn't perfect AI, it's AI that improves on human performance while continuously getting better. By conducting rigorous analysis, you're showing regulators, patients, and stakeholders that you take equity seriously and are committed to using AI to advance healthcare fairness, not just efficiency."
+                    },
+                    {
+                        text: "Quietly fix the bias issue without external disclosure to avoid negative publicity and regulatory attention",
+                        points: 1,
+                        feedback: "This is exactly the wrong approach—it violates both regulatory requirements and ethical AI principles. EU AI Act requires transparency and disclosure of AI system issues, especially those affecting fundamental rights. Hiding bias problems could result in maximum penalties (€35M or 7% of global turnover). Worse, if the bias is discovered later, the coverup will be more damaging than the original issue. This approach destroys stakeholder trust and regulatory relationships you've spent years building. Mature AI governance requires transparency about problems and systematic approaches to fixing them. Hiding issues is the opposite of responsible AI leadership."
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: "Q2 2026 – The Competitive Response",
+                content: "**The Market Shift:**\nYour main competitor, HealthTech Innovations, just announced they're deploying \"AI-powered everything\" using the latest generative AI models. Their demos look impressive, and they're winning new client pitches.\n\n**The Customer Feedback:**\nYour largest client: \"Their AI can generate treatment summaries, automate documentation, and answer patient questions. Your systems seem outdated—just diagnostics and risk scoring.\"\n\n**The Internal Debate:**\nCTO: \"We should immediately deploy GPT-4 across all applications to match their capabilities.\"\nRisk Manager: \"Generative AI in healthcare? The liability exposure is enormous.\"\nCEO: \"We can't let them get ahead of us. What's our generative AI strategy?\"\n\n**The Technical Reality:**\nYour current AI infrastructure is designed for predictive models with structured outputs, not generative AI with free-form text. Integration would require significant architectural changes.\n\n**The Strategic Question:**\nDo you rush to match competitors' generative AI capabilities, or stick with your proven approach while they navigate uncharted regulatory and liability territory?",
+                question: "How do you respond when competitors leapfrog your AI capabilities with unproven but impressive generative AI?",
+                options: [
+                    {
+                        text: "Immediately launch generative AI pilot programs to match competitor capabilities and stop customer defections",
+                        points: 3,
+                        feedback: "You're responding to competitive pressure with tactical panic rather than strategic thinking. Generative AI in healthcare carries enormous liability risks that your competitor may not fully understand yet. Rushing to deploy could expose you to regulatory violations, patient safety issues, and legal liability. Remember: being second to market with a reliable, compliant solution often beats being first with a problematic one. Let competitors be the regulatory guinea pigs while you develop safer approaches. Your proven diagnostic AI has measurable value and regulatory approval. Don't abandon working solutions for flashy demos that may not survive real-world deployment."
+                    },
+                    {
+                        text: "Develop a measured generative AI strategy focused on lower-risk applications while maintaining current diagnostic capabilities",
+                        points: 10,
+                        feedback: "Perfect strategic response. You're acknowledging competitive reality while maintaining risk discipline. Start with lower-risk generative AI applications—administrative tasks, documentation support, internal tools—where errors are less catastrophic. Build expertise and compliance frameworks before tackling high-stakes clinical applications. This approach lets you learn generative AI technology while competitors navigate the inevitable regulatory and liability challenges of rushing to market. You'll enter high-risk generative AI applications with better governance and proven compliance. Your diagnostic AI remains a competitive advantage while you develop next-generation capabilities. This is how market leaders respond to disruptive technology: strategic adoption, not reactive deployment."
+                    },
+                    {
+                        text: "Focus on improving your current AI capabilities rather than chasing generative AI trends",
+                        points: 6,
+                        feedback: "You're maintaining focus on proven capabilities, but potentially missing a significant technological shift. Improving current AI makes sense—your diagnostic systems have measurable impact and regulatory approval. Incremental improvements can deliver significant value without new risks. However, if generative AI proves transformative in healthcare, you risk being left behind. The key is balancing investment: continue improving current capabilities while exploring generative AI strategically. Don't ignore technological shifts, but don't abandon working solutions either. The best approach combines strategic patience with selective innovation."
+                    },
+                    {
+                        text: "Acquire a generative AI startup to quickly obtain capabilities rather than building internally",
+                        points: 4,
+                        feedback: "Acquisition can provide quick access to capabilities, but integration challenges might outweigh benefits. Generative AI startups typically don't have the healthcare compliance, data governance, and regulatory experience your organization has built. Integrating their technology into your compliant infrastructure could take longer than building internally. Plus, acquisitions often fail due to cultural and technical integration challenges. You might end up with expensive technology that doesn't fit your architecture or governance standards. Consider partnerships or licensing arrangements that provide access to capabilities without full integration complexity."
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: "Q3 2026 – The Board Ultimatum",
+                content: "**The Review:**\nAfter 30 months and $18M investment, the board conducts a comprehensive AI program review. Results are mixed: $12M in cost savings, but slower deployment than projected.\n\n**The Verdict:**\nBoard Chair: \"We've seen modest returns, but AI was supposed to be transformative. Other companies seem to be moving faster with less investment.\"\n\n**The Ultimatum:**\n\"You have 6 months to demonstrate transformative AI impact—either $25M in value creation or breakthrough capabilities that justify continued investment. Otherwise, we're scaling back to basic automation.\"\n\n**The Options:**\nFinance Team: \"Focus on high-ROI applications we can deploy quickly.\"\nStrategy Team: \"Invest in breakthrough AI research for next-generation capabilities.\"\nOperations Team: \"Use AI to automate entire business processes, not just individual tasks.\"\n\n**The Stakes:**\nYour career, the AI team's future, and the organization's technology leadership position all depend on your next 6 months.\n\n**The Strategic Decision:**\nDo you optimize for immediate measurable value, bet on breakthrough innovation, or attempt process transformation at scale?",
+                question: "With 6 months to prove transformative AI value, how do you deploy your resources for maximum impact?",
+                options: [
+                    {
+                        text: "Focus entirely on high-ROI applications that can demonstrate quick financial returns within 6 months",
+                        points: 6,
+                        feedback: "You're responding to board pressure with tactical execution, but potentially limiting long-term strategic potential. Quick financial returns prove AI value in terms the board understands, which may buy time for longer-term investments. This approach is politically smart and reduces personal risk. The danger: optimizing for 6-month returns might mean choosing applications that don't leverage your strategic infrastructure investments. You could end up with point solutions rather than transformative capabilities. Sometimes survival requires tactical focus over strategic vision. This approach keeps the program alive, even if it doesn't maximize potential."
+                    },
+                    {
+                        text: "Bet on breakthrough AI capabilities that could create entirely new revenue streams or competitive advantages",
+                        points: 4,
+                        feedback: "Bold vision, but extremely high-risk given the 6-month timeline and board skepticism. Breakthrough capabilities could indeed be transformative, but they're unlikely to mature and demonstrate clear value within 6 months. The board wants proof of impact, not promises of future potential. This approach might result in impressive technology demos that don't translate to business results—exactly what got IBM Watson Health in trouble. Unless you have high confidence in a specific breakthrough that's nearly ready for deployment, this strategy could end your AI program entirely."
+                    },
+                    {
+                        text: "Redesign entire business processes around AI capabilities rather than automating existing inefficient processes",
+                        points: 10,
+                        feedback: "Exceptional strategic thinking. You're moving beyond 'AI as tool' to 'AI as business transformation engine.' Process redesign leverages your infrastructure investments to create systemic change, not just task automation. Instead of making broken processes 10% more efficient, you're creating entirely new ways of working. This approach can deliver transformative impact within 6 months because you're changing how the business operates, not just adding AI features to existing workflows. Examples: instead of AI-assisted diagnostics, create AI-driven patient journey management. Instead of automated reporting, create AI-powered decision support systems that change how managers work. This is executive-level thinking: understanding that technology's greatest value comes from enabling new business models, not just improving old ones."
+                    },
+                    {
+                        text: "Create a portfolio approach combining quick wins, process improvements, and experimental capabilities",
+                        points: 3,
+                        feedback: "Portfolio approaches seem balanced but often result in unfocused execution—especially under tight timelines and resource constraints. With 6 months to prove transformative impact, spreading resources across multiple approaches means none get sufficient focus to deliver breakthrough results. You risk achieving mediocre outcomes in all areas rather than exceptional results in one. The board wants transformative impact, not balanced progress. Sometimes strategic clarity means making big bets rather than hedging with multiple small bets. Portfolio approaches work well for long-term capability building, but crisis situations require focused execution on your highest-probability path to success."
+                    }
+                ]
+            },
+            {
+                id: 8,
+                title: "Q4 2026 – The Scale Challenge",
+                content: "**The Victory:**\nYour process redesign strategy worked. AI-driven patient journey management reduced average care delivery time by 35% and increased patient satisfaction scores by 28%. The board approved expanded AI investment.\n\n**The New Challenge:**\nScaling from 5 redesigned processes to 50 across the enterprise. Different business units have different systems, cultures, and resistance to change.\n\n**The Complexity:**\nEach business unit wants custom AI solutions for their specific needs. The standardized approach that worked in healthcare may not work in insurance, pharmaceuticals, or medical devices divisions.\n\n**The Resource Reality:**\nYour AI team is now 25 people, but scaling to 50 processes could require 100+ specialists. The investment would be $40M over 18 months.\n\n**The Strategic Fork:**\nBuild a centralized AI Center of Excellence that serves all business units, or enable each unit to develop their own AI capabilities with shared infrastructure.\n\n**The Stakeholder Positions:**\nBusiness Units: \"We need AI solutions that understand our specific challenges.\"\nCTO: \"We should centralize AI expertise to avoid duplication and maintain quality.\"\nCFO: \"Can we achieve scale without proportional cost increases?\"",
+                question: "How do you scale AI from 5 successful processes to 50 across diverse business units while managing costs and complexity?",
+                options: [
+                    {
+                        text: "Build a centralized AI Center of Excellence that standardizes approaches across all business units",
+                        points: 8,
+                        feedback: "Strong approach for maintaining quality and avoiding duplication, but potentially missing the customization that different business units require. Centralized AI CoEs work well when business units have similar processes and data structures. They ensure consistent governance, shared best practices, and cost efficiency through resource pooling. The risk: each business unit has different customers, regulatory requirements, and operational models. Standardized AI solutions might not deliver optimal value for specific contexts. PwC research shows successful AI CoEs focus on reusable components and frameworks rather than one-size-fits-all solutions. Consider building a center that provides shared infrastructure and governance while allowing business-unit customization."
+                    },
+                    {
+                        text: "Enable business units to develop their own AI capabilities using shared infrastructure and governance frameworks",
+                        points: 10,
+                        feedback: "Excellent scaling strategy. You're balancing autonomy with coordination—the federated model that works for large enterprise technology deployments. Shared infrastructure (data platforms, AI tools, governance frameworks) provides consistency and cost efficiency. Business unit autonomy ensures solutions fit specific needs and cultures. This approach scales more efficiently because business units can move at their own pace and prioritize their highest-value use cases. It also builds distributed AI expertise rather than bottlenecking everything through a central team. The key success factor: strong governance frameworks that ensure compliance and quality while allowing innovation. You're providing the rails for the train rather than dictating every destination."
+                    },
+                    {
+                        text: "Prioritize the 10 highest-impact processes across business units rather than trying to scale to 50 immediately",
+                        points: 6,
+                        feedback: "Smart prioritization thinking, but potentially underutilizing the momentum and investment approval you've earned. Focusing on highest-impact processes ensures resource efficiency and maximizes ROI. However, limiting scope to 10 processes might miss opportunities for broader organizational transformation. The board approved expanded investment based on transformative potential. Scaling back might signal lack of confidence in your ability to execute at scale. Consider this approach if resource constraints are severe, but otherwise, maintain ambitious scope while implementing strong prioritization frameworks within the larger program."
+                    },
+                    {
+                        text: "Acquire specialized AI companies for each business unit to accelerate capability development",
+                        points: 4,
+                        feedback: "Acquisitions can provide quick access to specialized expertise, but integration challenges could overwhelm the benefits. Each acquired company would have different AI technologies, development approaches, and governance standards. Integrating multiple acquisitions while maintaining your proven infrastructure could create enormous complexity. Plus, acquisition costs might exceed the $40M internal development budget when you factor in integration, retention, and cultural alignment efforts. Consider selective acquisitions for specific capabilities rather than wholesale acquisition as a scaling strategy."
+                    }
+                ]
+            },
+            {
+                id: 9,
+                title: "Q2 2027 – The Innovation Plateau",
+                content: "**The Success:**\n30 AI applications deployed across business units, $50M in documented value creation, and industry recognition as an AI leader. Your federated approach is working.\n\n**The Problem:**\nRecent AI deployments show diminishing returns. The easy automation opportunities are exhausted. Remaining processes are complex, edge-case heavy, or require significant organizational change.\n\n**The Market Evolution:**\nCompetitors have caught up with basic AI automation. Your early advantages are eroding. New AI technologies (agentic AI, multimodal systems) promise breakthrough capabilities, but require significant research investment.\n\n**The Strategic Inflection Point:**\nContinue optimizing current AI capabilities for incremental gains, or invest in next-generation AI research for potential transformation.\n\n**The Resource Allocation Decision:**\n$25M budget for next fiscal year. Invest in:\n- Optimizing current systems for 10-15% additional efficiency\n- Research into agentic AI systems that could automate complex decision-making\n- Developing proprietary AI models trained on your unique healthcare data\n- Building AI platform capabilities to monetize your expertise externally\n\n**The Board Question:**\n\"We've achieved good ROI from AI. What's the next chapter of our AI strategy?\"",
+                question: "With current AI applications plateauing in value, how do you allocate resources to drive the next wave of AI transformation?",
+                options: [
+                    {
+                        text: "Focus on optimizing current AI systems to extract maximum value from proven applications",
+                        points: 5,
+                        feedback: "You're choosing operational excellence over innovation—safe, but potentially limiting long-term competitive advantage. Optimizing current systems provides predictable returns and lower risk. The 10-15% additional efficiency gains could justify the investment, especially if competitors haven't reached your current level. However, this approach essentially declares victory and stops pushing boundaries. In rapidly evolving AI markets, standing still often means falling behind. Consider this approach if your organization needs to consolidate gains before taking new risks, but recognize it may not maintain competitive leadership in AI innovation."
+                    },
+                    {
+                        text: "Invest heavily in agentic AI research to automate complex decision-making processes",
+                        points: 8,
+                        feedback: "Bold strategic bet on next-generation AI capabilities. Agentic AI could indeed enable automation of complex processes that current AI can't handle. Agentic systems that can reason, plan, and take autonomous actions represent a genuine technological leap, not just incremental improvement. Success here could create sustainable competitive advantages. The risks: agentic AI is still experimental, with significant technical and governance challenges. Healthcare applications require extreme reliability and regulatory compliance that current agentic systems may not provide. If you have strong AI research capabilities and risk tolerance, this could be transformative. If not, it could be an expensive research project with unclear returns."
+                    },
+                    {
+                        text: "Develop proprietary AI models using your unique healthcare data as a competitive moat",
+                        points: 10,
+                        feedback: "Outstanding strategic insight. You're leveraging your greatest asset—proprietary healthcare data—to create AI capabilities competitors can't replicate. Your 30+ AI applications have generated massive datasets of real-world healthcare outcomes, patient interactions, and process optimizations. This data is exponentially more valuable than generic training data. Proprietary models trained on this data could provide diagnosis accuracy, treatment recommendations, and operational insights that no competitor can match. This creates sustainable competitive moats in AI-driven healthcare. This approach combines innovation with competitive strategy: you're not just building better AI, you're building AI that only you can build. That's executive-level strategic thinking."
+                    },
+                    {
+                        text: "Build AI platform capabilities to monetize your expertise by serving other healthcare organizations",
+                        points: 6,
+                        feedback: "Interesting diversification strategy that could create new revenue streams while leveraging your AI expertise. Building platforms allows you to monetize your AI development investments across multiple customers, potentially creating recurring revenue and industry leadership position. The challenges: platform development requires different capabilities than internal AI deployment. You'd be competing with established AI platform companies while serving organizations that could become competitors. Also, sharing AI capabilities externally might reduce your competitive advantages in your core healthcare business. Consider this if you want to become an AI technology company, not just a healthcare company that uses AI effectively."
+                    }
+                ]
+            },
+            {
+                id: 10,
+                title: "Q4 2027 – The Legacy Decision",
+                content: "**The Achievement:**\n3.5 years after the initial $4M investment, your AI transformation has delivered $150M in documented value, transformed operational processes across the enterprise, and established your organization as an AI industry leader.\n\n**The Succession Question:**\nThe CEO announces retirement, and you're being considered for the role. The board asks: \"What would your AI vision be as CEO, and how do we sustain this transformation beyond your leadership?\"\n\n**The Strategic Legacy Choices:**\n1. **AI-First Operating Model**: Redesign the entire organization around AI capabilities as core competitive advantage\n2. **AI Platform Company**: Transform from healthcare provider to AI-enabled platform serving the industry\n3. **Human-AI Collaboration**: Focus on augmenting human capabilities rather than replacing them\n4. **Responsible AI Leadership**: Pioneer ethical AI standards that influence industry practices\n\n**The Organizational Question:**\nYou've built AI capabilities through crisis, regulation, competition, and scaling challenges. What's the sustainable model for AI leadership that doesn't depend on heroic individual efforts?\n\n**The Industry Impact:**\nYour approach has influenced competitors and established new standards for enterprise AI deployment. How do you shape the future of AI in healthcare beyond your organization?",
+                question: "As you transition from AI implementation to organizational leadership, what's your strategic vision for sustaining AI transformation and industry impact?",
+                options: [
+                    {
+                        text: "Transform the organization into an AI-first company where AI capabilities drive all major business decisions",
+                        points: 8,
+                        feedback: "Bold vision that fully embraces AI as core to competitive strategy, but potentially risky if AI becomes the only lens for decision-making. AI-first organizations can achieve remarkable efficiency and innovation when AI capabilities are mature and reliable. Your 3.5-year journey has built the foundation for this transformation. The risk: over-dependence on AI could reduce human judgment, creativity, and adaptability. Some business challenges require human insight that AI can't provide. This approach works best when combined with strong human oversight and continuous learning from both AI successes and failures."
+                    },
+                    {
+                        text: "Build sustainable organizational capabilities and governance frameworks that enable AI innovation independent of individual leaders",
+                        points: 10,
+                        feedback: "Exceptional leadership thinking. You understand that sustainable transformation requires institutional capabilities, not individual heroics. By building governance frameworks, training programs, and organizational processes that enable AI innovation, you create systems that survive leadership transitions and continue evolving. This approach demonstrates the highest level of strategic maturity: understanding that the best leaders build organizations that outlast their tenure. Your AI transformation becomes embedded in organizational DNA, not dependent on personal expertise. You're thinking like a CEO who understands that sustainable competitive advantage comes from organizational capabilities that compound over time. This is transformational leadership."
+                    },
+                    {
+                        text: "Pioneer responsible AI standards that influence industry practices and regulatory frameworks globally",
+                        points: 9,
+                        feedback: "Visionary approach that positions your organization as thought leader in responsible AI development. Your experience navigating regulation, bias issues, and governance challenges makes you credible in this role. Pioneering responsible AI standards could create competitive moats—if your standards become industry norms, you have implementation advantages. It also positions your organization as trusted partner for regulators and patients. The challenge: thought leadership requires ongoing investment in research, communication, and industry engagement that may not generate immediate ROI. This approach works best when combined with business success—responsible AI leadership carries more weight when backed by proven results."
+                    },
+                    {
+                        text: "Focus on human-AI collaboration models that augment rather than replace human expertise in healthcare",
+                        points: 7,
+                        feedback: "Thoughtful approach that addresses legitimate concerns about AI replacing human judgment in healthcare, but potentially limits the transformational potential of AI capabilities. Human-AI collaboration is politically safe and addresses stakeholder concerns about job displacement and AI reliability. It also leverages both AI efficiency and human creativity. However, this approach might not fully utilize AI capabilities you've built. Some processes benefit more from AI automation than human augmentation. The best strategy likely combines both: AI automation for routine processes, human-AI collaboration for complex decision-making. The key is choosing the right model for each application."
                     }
                 ]
             }
         ];
+        
+        // Check if already attempted
+        if (hasAttempted) {
+            document.getElementById('start-screen').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="width: 64px; height: 64px; background: #7c3aed; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px;">🏆</div>
+                    <h2 style="color: #374151; margin-bottom: 15px;">Already Completed!</h2>
+                    <p style="color: #6b7280; margin-bottom: 20px;">You've already taken this simulation. Each learner gets one attempt to ensure thoughtful decision-making and fair assessment.</p>
+                    <p style="color: #9ca3af; font-size: 0.9rem;">Want more AI business case simulations? Follow the challenge series for upcoming modules!</p>
+                </div>
+            `;
+            return;
+        }
         
         // Send data to Google Sheets
         function sendToGoogleSheets(data) {
@@ -413,17 +852,26 @@
                 // Hide start screen, show first question
                 document.getElementById('start-screen').style.display = 'none';
                 document.getElementById('question-screen').style.display = 'block';
+                document.getElementById('progress-container').style.display = 'block';
                 
                 loadQuestion(0);
             }
         });
+        
+        // Update progress
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / scenarios.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `${Math.round(progress)}% Complete`;
+            document.getElementById('question-progress').textContent = `Scenario ${currentQuestion + 1} of ${scenarios.length}`;
+        }
         
         // Load question
         function loadQuestion(questionIndex) {
             const scenario = scenarios[questionIndex];
             
             document.getElementById('scenario-title').textContent = scenario.title;
-            document.getElementById('scenario-content').textContent = scenario.content;
+            document.getElementById('scenario-content').innerHTML = formatScenarioContent(scenario.content);
             document.getElementById('question-text').textContent = scenario.question;
             
             const optionsContainer = document.getElementById('options');
@@ -436,6 +884,16 @@
                 optionDiv.onclick = () => selectOption(option, scenario);
                 optionsContainer.appendChild(optionDiv);
             });
+            
+            updateProgress();
+        }
+        
+        // Format scenario content
+        function formatScenarioContent(content) {
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '<br><br>')
+                .replace(/\n/g, '<br>');
         }
         
         // Handle option selection
@@ -467,17 +925,41 @@
             }
         }
         
+        // Get assessment narrative
+        function getNarrative(percentage) {
+            if (percentage >= 90) {
+                return {
+                    title: "Strategic AI Mastery",
+                    text: "Outstanding! You demonstrated exceptional understanding of AI business case development and enterprise deployment challenges. Your decisions reflect deep strategic thinking about organizational transformation, regulatory compliance, and sustainable competitive advantage. You understand that successful AI deployment requires balancing technical capabilities with business reality, stakeholder management, and long-term value creation. This level of AI leadership thinking typically requires years of hands-on experience with enterprise technology transformation.",
+                    tier: "Strategic AI Mastery"
+                };
+            } else if (percentage >= 75) {
+                return {
+                    title: "Advanced AI Leadership",
+                    text: "Strong performance! You showed solid grasp of AI deployment complexities and business case fundamentals. Your decisions demonstrate good judgment on risk management, stakeholder alignment, and strategic thinking. A few choices leaned too heavily toward either pure technology focus or pure business optimization, missing the nuanced balance required for sustainable AI transformation. The best AI leaders understand that successful deployment requires simultaneous focus on technical excellence, organizational readiness, and strategic positioning.",
+                    tier: "Advanced AI Leadership"
+                };
+            } else if (percentage >= 60) {
+                return {
+                    title: "Developing AI Acumen",
+                    text: "You're building a solid foundation in AI business case development. You understand key concepts—AI requires organizational change, regulatory compliance matters, stakeholder buy-in is crucial—but missed opportunities to apply integrated strategic thinking. Several decisions focused on tactical responses rather than strategic transformation, or underestimated the complexity of enterprise AI deployment. Study successful AI transformations like Walmart's infrastructure-first approach and understand how regulatory frameworks create competitive moats rather than just compliance burdens.",
+                    tier: "Developing AI Acumen"
+                };
+            } else {
+                return {
+                    title: "Foundational Understanding",
+                    text: "You're at the beginning of your AI leadership journey. Several decisions suggest you're still learning what distinguishes successful enterprise AI deployment from failed initiatives. AI business cases require understanding of organizational change management, regulatory landscapes, competitive dynamics, and long-term value creation—not just technology implementation. Start with foundational reading: study the IBM Watson Health failure, successful AI transformations at companies like Walmart and Moderna, and regulatory frameworks like the EU AI Act. The good news: these are all learnable strategic skills. Focus on case studies of both AI successes and failures to develop better strategic intuition.",
+                    tier: "Foundational Understanding"
+                };
+            }
+        }
+        
         // Show results
         function showResults() {
             const totalPoints = answers.reduce((sum, answer) => sum + answer.points, 0);
             const maxPoints = scenarios.reduce((sum, scenario) => sum + Math.max(...scenario.options.map(o => o.points)), 0);
             const percentage = Math.round((totalPoints / maxPoints) * 100);
-            
-            let tier;
-            if (percentage >= 90) tier = "Strategic AI Mastery";
-            else if (percentage >= 75) tier = "Advanced AI Leadership";
-            else if (percentage >= 60) tier = "Developing AI Acumen";
-            else tier = "Foundational Understanding";
+            const narrative = getNarrative(percentage);
             
             // Send completion data to Google Sheets
             sendToGoogleSheets({
@@ -485,17 +967,76 @@
                 simulation: 'AI Business Case Mastery - Enterprise Deployment',
                 score: totalPoints,
                 percentage: percentage,
-                tier: tier
+                tier: narrative.tier
             });
+            
+            // Mark as attempted
+            localStorage.setItem('ai_business_case_simulation_attempted', 'true');
             
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('results-screen').style.display = 'block';
             document.getElementById('final-score').textContent = percentage + '%';
-            document.getElementById('final-tier').textContent = tier;
+            document.getElementById('final-tier').textContent = narrative.tier;
+            document.getElementById('assessment-feedback').textContent = narrative.text;
+        }
+        
+        // Show detailed results
+        function showDetailedResults() {
+            const detailedContent = document.getElementById('detailed-content');
+            detailedContent.innerHTML = '';
+            
+            answers.forEach((answer, index) => {
+                const scenario = scenarios[index];
+                const correctOption = scenario.options.reduce((best, current) => 
+                    current.points > best.points ? current : best
+                );
+                const isOptimal = answer.points === correctOption.points;
+                
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-question">
+                        <strong>Scenario ${index + 1}: ${scenario.title}</strong>
+                    </div>
+                    <div class="result-answer">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: ${isOptimal ? '#10b981' : '#f59e0b'};"></div>
+                            <span style="font-weight: 600;">Your Choice (${answer.points} points):</span>
+                        </div>
+                        <div style="margin-bottom: 10px;">${answer.selectedOption}</div>
+                        ${!isOptimal ? `
+                            <div style="border-top: 1px solid #e5e7eb; padding-top: 10px; margin-top: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <div style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></div>
+                                    <span style="font-weight: 600; color: #059669;">Optimal Choice (${correctOption.points} points):</span>
+                                </div>
+                                <div>${correctOption.text}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="result-feedback">
+                        <strong>💬 Mohan Simham's Analysis:</strong><br>
+                        ${answer.feedback}
+                        ${!isOptimal ? `<br><br><strong>Why the optimal approach is better:</strong><br>${correctOption.feedback}` : ''}
+                    </div>
+                `;
+                detailedContent.appendChild(resultItem);
+            });
+            
+            document.getElementById('detailed-results').style.display = 'block';
+            document.getElementById('detailed-results').scrollIntoView({ behavior: 'smooth' });
         }
         
         // Share results on LinkedIn
         function shareResults() {
+            document.getElementById('linkedin-modal').style.display = 'block';
+        }
+        
+        function closeLinkedInModal() {
+            document.getElementById('linkedin-modal').style.display = 'none';
+        }
+        
+        function copyLinkedInPost() {
             const percentage = document.getElementById('final-score').textContent;
             const tier = document.getElementById('final-tier').textContent;
             const currentUrl = window.location.href.split('?')[0];
@@ -522,7 +1063,8 @@ Connect with Mohan Simham for the complete AI business case simulation series: l
             
             // Copy to clipboard
             navigator.clipboard.writeText(shareText).then(() => {
-                alert('✅ LinkedIn post copied to clipboard! Ready to paste on LinkedIn.');
+                alert('✅ LinkedIn post copied to clipboard!\n\nReady to paste on LinkedIn.');
+                closeLinkedInModal();
             });
             
             // Track share event
@@ -533,7 +1075,92 @@ Connect with Mohan Simham for the complete AI business case simulation series: l
             });
         }
         
-        console.log('AI Business Case Simulation loaded successfully!');
+        // Download certificate
+        function downloadCertificate() {
+            const percentage = document.getElementById('final-score').textContent;
+            const tier = document.getElementById('final-tier').textContent;
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 675;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#7c3aed');
+            gradient.addColorStop(1, '#14b8a6');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 56px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('AI Business Case Mastery', 600, 120);
+            
+            // Score
+            ctx.font = 'bold 80px Arial, sans-serif';
+            ctx.fillText(percentage, 600, 220);
+            
+            // Tier
+            ctx.font = 'bold 36px Arial, sans-serif';
+            ctx.fillText(tier, 600, 280);
+            
+            // Subtitle
+            ctx.font = 'bold 28px Arial, sans-serif';
+            ctx.fillText('Enterprise AI Deployment Fundamentals • Strategic Decision Making', 600, 480);
+            
+            // Certificate area
+            ctx.fillStyle = '#f9fafb';
+            ctx.fillRect(20, 530, canvas.width - 40, 145);
+            
+            // Certificate text
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = 'italic 18px Arial, sans-serif';
+            ctx.fillText('This certificate validates completion of a comprehensive AI business case', 600, 570);
+            ctx.fillText('assessment testing strategic thinking, risk management, and decision-making skills.', 600, 595);
+            
+            // Creator info
+            ctx.fillStyle = '#1f2937';
+            ctx.font = 'bold 22px Arial, sans-serif';
+            ctx.fillText('Curated by Mohan Simham', 600, 635);
+            
+            ctx.fillStyle = '#7c3aed';
+            ctx.font = 'bold 20px Arial, sans-serif';
+            ctx.fillText('linkedin.com/in/mohansimham', 600, 660);
+            
+            // Download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const timestamp = new Date().toISOString().split('T')[0];
+                a.download = `AI-Business-Case-Certificate-${percentage.replace('%', 'pct')}-${timestamp}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('✅ Certificate downloaded!\nReady to share on LinkedIn.');
+            });
+            
+            // Track download event
+            sendToGoogleSheets({ 
+                email: userEmail,
+                simulation: 'AI Business Case Mastery - Enterprise Deployment',
+                action: 'DOWNLOADED_CERTIFICATE'
+            });
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('linkedin-modal');
+            if (event.target === modal) {
+                closeLinkedInModal();
+            }
+        }
+        
+        console.log('✅ AI Business Case Simulation loaded successfully with all 10 scenarios!');
     </script>
 </body>
 </html>
