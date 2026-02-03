@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Business Case Mastery - Enterprise Deployment Fundamentals</title>
+    <meta name="description" content="Master AI business case development with real enterprise scenarios. Test your strategic thinking as a CDO or CIO.">
+    
+    <!-- Open Graph for LinkedIn sharing -->
+    <meta property="og:title" content="AI Business Case Mastery - Enterprise Deployment Simulation">
+    <meta property="og:description" content="Can you navigate AI deployment challenges? Test your CDO/CIO strategic decision-making skills.">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* READABILITY OPTIMIZATION */
+        .scenario-content {
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 65ch;
+            color: #1f2937;
+        }
+        
+        .scenario-content p {
+            margin-bottom: 1.25em;
+        }
+        
+        .scenario-content strong {
+            display: block;
+            color: #7c3aed;
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        
+        .scenario-content .emoji-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.25em;
+        }
+        
+        .scenario-content .emoji {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            margin-top: 0.1em;
+        }
+        
+        .scenario-content .context-text {
+            flex: 1;
+        }
+        
+        .analysis-scenario {
+            background-color: #f8fafc;
+            padding: 1.5rem;
+            border-left: 4px solid #7c3aed;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .feedback-content {
+            font-size: 15px;
+            line-height: 1.65;
+            color: #374151;
+        }
+        
+        .feedback-content p {
+            margin-bottom: 1em;
+        }
+        
+        .feedback-content strong {
+            color: #7c3aed;
+            font-weight: 600;
+            display: inline;
+            font-size: inherit;
+            margin: 0;
+        }
+        
+        .feedback-content .quote-style {
+            font-style: italic;
+            border-left: 3px solid #d1d5db;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #6b7280;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+
+        // Icons
+        const TrendingUpIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' 
+            }));
+
+        const TrophyIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z' 
+            }));
+
+        const UsersIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z' 
+            }));
+
+        const MailIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' 
+            }));
+
+        const ShareIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z' 
+            }));
+
+        const DownloadIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4' 
+            }));
+
+        const CheckIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M5 13l4 4L19 7' 
+            }));
+
+        const XIcon = ({ className = "w-6 h-6" }) => 
+            React.createElement('svg', { 
+                className, 
+                fill: 'none', 
+                stroke: 'currentColor', 
+                viewBox: '0 0 24 24' 
+            }, React.createElement('path', { 
+                strokeLinecap: 'round', 
+                strokeLinejoin: 'round', 
+                strokeWidth: 2, 
+                d: 'M6 18L18 6M6 6l12 12' 
+            }));
+
+        // Google Apps Script URL for data tracking
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6E8UJUn5xhilm2pLWjdvaip_6MnSCf-XRVPv5u4hOttjr0SNCu9I10q2ESLKGQ04_mQ/exec';
+
+        function AIBusinessCaseSimulation() {
+            const [hasStarted, setHasStarted] = useState(false);
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [answers, setAnswers] = useState([]);
+            const [showResults, setShowResults] = useState(false);
+            const [email, setEmail] = useState('');
+            const [hasAttempted, setHasAttempted] = useState(false);
+            const [showLinkedInModal, setShowLinkedInModal] = useState(false);
+
+            useEffect(() => {
+                // Check URL parameters for reset mode
+                const urlParams = new URLSearchParams(window.location.search);
+                const resetMode = urlParams.get('reset') === 'true';
+
+                // Restore session if exists
+                const storedEmail = localStorage.getItem('aiSimEmail');
+                const storedStartTime = localStorage.getItem('aiSimStartTime');
+                const storedAnswers = localStorage.getItem('aiSimAnswers');
+                
+                // Check if session is valid (within 24 hours)
+                const isValidSession = storedStartTime && 
+                    (Date.now() - new Date(storedStartTime).getTime()) < (24 * 60 * 60 * 1000);
+
+                if (storedEmail && isValidSession && storedAnswers) {
+                    setEmail(storedEmail);
+                    const parsedAnswers = JSON.parse(storedAnswers);
+                    if (parsedAnswers.length < simulation.questions.length) {
+                        setHasStarted(true);
+                        setAnswers(parsedAnswers);
+                        setCurrentQuestion(parsedAnswers.length);
+                    }
+                }
+
+                if (resetMode) {
+                    // Creator mode: Clear the attempt flag and allow retaking
+                    localStorage.removeItem('ai_business_case_simulation_attempted');
+                    setHasAttempted(false);
+                } else {
+                    // Normal mode: Check if already attempted
+                    const attempted = localStorage.getItem('ai_business_case_simulation_attempted');
+                    if (attempted) {
+                        setHasAttempted(true);
+                    }
+                }
+            }, []);
+
+            const simulation = {
+                title: "AI Business Case Mastery: Enterprise Deployment Fundamentals",
+                company: "Enterprise",
+                week: "Module 1",
+                year: "2026",
+                description: "Navigate the complex landscape of AI deployment as a senior technology leader. These scenarios are drawn from real enterprise failures and successes, testing your ability to build sustainable AI business cases. Every decision challenges core executive skills: strategic thinking, risk management, regulatory compliance, and organizational transformation. No theoretical frameworks—just the real challenges that separate successful AI implementations from the 80% that fail. Each scenario sharpens critical leadership abilities: balancing innovation with governance, managing stakeholder expectations, and building business cases that survive executive scrutiny.",
+                questions: [
+                    {
+                        id: 1,
+                        scenario: "**Q1 2024 – The $4 Million Watson Moment**\n\n**The Situation:**\nYou're the Chief Data Officer at MedTech Global, a Fortune 500 healthcare company. The CEO just announced a $4M investment in an AI-powered diagnostic platform, calling it \"our moonshot.\"\n\n**The Reality Check:**\nYour team's analysis shows concerning gaps: data quality issues in 60% of patient records, fragmented systems across 12 business units, and no unified data governance framework.\n\n**The Pressure:**\nBoard expectations are sky-high after the CEO's announcement. Marketing has already promised healthcare providers \"revolutionary AI diagnostics\" by Q4.\n\n**The IBM Lesson:**\nYou know IBM Watson Health's $4B failure started exactly like this—overpromising on AI capabilities before solving fundamental data and organizational challenges.\n\n**The Choice:**\nYour recommendation will determine whether this becomes a Watson-style disaster or a foundation for genuine AI transformation.",
+                        question: "How do you approach this high-stakes AI business case with $4M committed and executive expectations set?",
+                        options: [
+                            {
+                                text: "Proceed with the AI diagnostic platform as announced—find ways to make it work within the timeline",
+                                points: 2,
+                                feedback: "This path leads straight to IBM Watson Health territory—a $4B lesson in what happens when technology ambition outpaces organizational readiness.\n\nProceeding without addressing fundamental data quality and governance issues is like building a skyscraper on quicksand. The AI will amplify existing data problems, not solve them.\n\nWatson Health failed because IBM tried to leapfrog infrastructure problems with sophisticated AI. The result: systems that couldn't integrate with hospital workflows and recommendations doctors couldn't trust.\n\nAs CDO, your job is sustainable AI success, not temporary executive satisfaction."
+                            },
+                            {
+                                text: "Recommend a phased approach: Phase 1 focuses on data infrastructure and governance, Phase 2 launches AI capabilities",
+                                points: 10,
+                                feedback: "Exactly right. You're preventing a Watson Health repeat by tackling the real challenge: organizational readiness.\n\nSuccessful AI deployments follow the 70-20-10 rule: 70% change management and data infrastructure, 20% integration work, 10% algorithm optimization.\n\nBy Phase 1, you'll have unified data governance, cleaned datasets, and stakeholder buy-in. Phase 2's AI will actually work because it has a solid foundation.\n\nThis approach may disappoint executives short-term, but it prevents the 80% AI project failure rate. Walmart's AI transformation succeeded because they spent 2 years building data infrastructure first.\n\nYou're thinking like a leader who understands that sustainable AI requires organizational transformation, not just technology deployment."
+                            },
+                            {
+                                text: "Partner with external AI consultants to fast-track the diagnostic platform development",
+                                points: 4,
+                                feedback: "External consultants can accelerate development, but they can't fix your fundamental organizational challenges.\n\nThe core problems—fragmented data, lack of governance, stakeholder alignment—require internal transformation. Consultants will build AI on top of broken systems, creating expensive technical debt.\n\nMIT research shows external AI solutions have 67% success rate vs 33% for internal builds, but only when proper data infrastructure exists first.\n\nConsultants are valuable for specific technical challenges, not foundational organizational problems. Use them strategically, not as shortcuts."
+                            },
+                            {
+                                text: "Pilot the AI platform in one business unit to prove concept before full deployment",
+                                points: 6,
+                                feedback: "Smart pilot thinking, but you're still not addressing the fundamental infrastructure problems.\n\nEven a successful pilot in one business unit won't solve data fragmentation across 12 units or create the governance framework needed for enterprise-wide deployment.\n\nPilots work when you're testing AI capabilities with solid infrastructure. They don't work when you're trying to prove AI can overcome bad data and organizational dysfunction.\n\nThe pilot will likely show some promising results, creating false confidence for full deployment without fixing underlying issues. This is how organizations get stuck in 'pilot purgatory.'"
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        scenario: "**Q3 2024 – The Regulatory Earthquake**\n\n**The Development:**\nSix months into your AI infrastructure project, the EU AI Act enforcement begins. Your legal team drops a bombshell: your planned AI diagnostic platform qualifies as \"high-risk\" under the new regulations.\n\n**The Requirements:**\n- Comprehensive technical documentation and audit trails\n- Human oversight mandates for all AI decisions\n- Data lineage tracking from source to output\n- Conformity assessments and CE marking for EU market access\n- Penalties up to €35M or 7% of global turnover for violations\n\n**The Cost Impact:**\nCompliance will add $2M to the project and 8 months to timeline. Your CFO is furious: \"We're already $4M in. This AI regulation is killing our ROI.\"\n\n**The Strategic Reality:**\n40% of your revenue comes from European healthcare providers. Non-compliance means losing EU market access entirely.\n\n**The Board Reaction:**\nSome directors suggest scrapping AI entirely: \"Maybe we're too early to this technology. Let competitors figure out compliance first.\"",
+                        question: "How do you reframe the business case when regulatory compliance dramatically changes project economics?",
+                        options: [
+                            {
+                                text: "Recommend pausing all AI initiatives until regulatory landscape stabilizes",
+                                points: 3,
+                                feedback: "This is the path of least resistance, but it's strategically dangerous.\n\nRegulation isn't going away—it's expanding. The EU AI Act is just the beginning. Other jurisdictions are developing similar frameworks, and compliance requirements will only increase.\n\nBy waiting, you're ceding first-mover advantage to competitors who are learning to navigate regulatory complexity now. Companies that master AI compliance early will have sustainable competitive moats.\n\nWorst of all, you're teaching your organization to retreat from hard problems rather than solve them. That's not leadership—that's avoidance."
+                            },
+                            {
+                                text: "Pivot to non-regulated AI applications that don't fall under high-risk categories",
+                                points: 5,
+                                feedback: "You're finding a path of lower regulatory resistance, but potentially abandoning the highest-value AI applications.\n\n'Low-risk' AI often means 'low-impact' AI. The reason diagnostic AI is highly regulated is because it has high stakes and high value. By pivoting away, you may be avoiding both the risk and the reward.\n\nHowever, this could be a smart intermediate step—build AI capabilities and compliance processes with lower-risk applications, then tackle high-risk use cases once you have regulatory expertise.\n\nThe key question: Are you pivoting strategically to build capabilities, or just running from hard problems?"
+                            },
+                            {
+                                text: "Embrace compliance as a competitive moat—invest in becoming the regulatory leader in AI healthcare",
+                                points: 10,
+                                feedback: "Brilliant strategic reframing. You're turning regulatory burden into competitive advantage.\n\nCompliance is a moat because it's expensive and complex—exactly the kind of barrier that prevents competitors from catching up. Companies that master EU AI Act compliance first will have sustainable advantages in global markets.\n\nRegulatory expertise becomes a core capability, not just a cost center. You can eventually monetize this through compliance consulting, platform partnerships, and premium positioning.\n\nThis mirrors how financial services companies turned GDPR compliance into competitive advantage—the companies that invested early dominated post-regulation markets.\n\nAs CDO, you're thinking strategically about how regulatory reality shapes competitive dynamics. This is executive-level thinking."
+                            },
+                            {
+                                text: "Develop a compliance-optional architecture that can operate in both regulated and unregulated markets",
+                                points: 2,
+                                feedback: "This sounds sophisticated but violates a fundamental principle: you can't build halfway compliance into AI systems.\n\nEU AI Act requirements—data lineage, human oversight, audit trails—must be baked into system architecture from the ground up. You can't add compliance as an afterthought or toggle feature.\n\nTrying to build 'compliance-optional' systems means building lowest-common-denominator AI that satisfies neither regulated nor unregulated use cases effectively.\n\nWorst case: you end up with technical debt that makes both compliance and innovation harder. Choose your regulatory strategy clearly, then build for it completely."
+                            }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        scenario: "**Q1 2025 – The ROI Reality Check**\n\n**The Progress:**\n12 months in, your team has built solid AI infrastructure: unified data governance, clean datasets, and EU AI Act compliance frameworks. Total investment: $6M.\n\n**The Challenge:**\nThe CFO presents a brutal analysis: \"We're $6M deep with zero revenue impact. Competitors using simple rule-based systems are outperforming us on cost and speed.\"\n\n**The Data Points:**\n- Your AI infrastructure serves 3 pilot applications\n- Rule-based competitors deploy solutions in 3 months vs your 18-month development cycles\n- Board pressure mounting: \"Are we over-engineering this AI transformation?\"\n- McKinsey research shows 80% of organizations haven't seen bottom-line EBIT impact from AI\n\n**The Competing Visions:**\nCTO: \"We're building for scale—our infrastructure will support 50+ AI applications.\"\nCEO: \"We need revenue impact NOW. Maybe we should have stayed with simpler approaches.\"\n\n**The Strategic Crossroads:**\nDo you accelerate deployment of revenue-generating AI applications, or continue building the comprehensive foundation for long-term AI transformation?",
+                        question: "How do you justify continued investment when simpler alternatives are showing faster results?",
+                        options: [
+                            {
+                                text: "Accelerate deployment of revenue-generating AI applications immediately, even if they use less sophisticated approaches",
+                                points: 6,
+                                feedback: "You're responding to legitimate business pressure, but potentially undermining the strategic foundation you've built.\n\nThe risk: rushing to market with less sophisticated AI might deliver short-term revenue but create technical debt that limits future capabilities. You could end up with multiple point solutions that don't integrate.\n\nHowever, showing revenue impact is crucial for maintaining stakeholder support for the broader AI transformation. The key is choosing applications that can demonstrate value while leveraging your infrastructure investment.\n\nConsider this a strategic pivot, not a surrender—use simple applications to prove your infrastructure works, then build complexity."
+                            },
+                            {
+                                text: "Stay the course with comprehensive AI infrastructure—demonstrate long-term competitive advantages over rule-based systems",
+                                points: 8,
+                                feedback: "You're maintaining strategic discipline, but you need to communicate the differentiation more effectively.\n\nYour infrastructure investment creates capabilities competitors can't match: regulatory compliance, scalable data governance, and enterprise-grade AI architecture. These become sustainable moats.\n\nThe challenge is proving near-term value while building long-term advantage. Walmart's AI transformation took 2 years of infrastructure building before showing 25-30% cost reduction—but competitors still haven't caught up.\n\nStrategic patience requires executive communication skills: help leadership understand why sustainable AI advantage requires upfront investment in organizational capabilities."
+                            },
+                            {
+                                text: "Hybrid approach: Deploy quick-win rule-based solutions while continuing AI infrastructure development in parallel",
+                                points: 4,
+                                feedback: "This seems balanced but could create the worst of both worlds: resource dilution and technical debt.\n\nRunning parallel tracks means competing for the same budget, engineering talent, and executive attention. Neither initiative gets full focus, potentially leading to mediocre results in both.\n\nWorse, quick-win solutions might satisfy immediate pressure, reducing organizational commitment to the strategic AI infrastructure. You could end up trapped in short-term thinking.\n\nSometimes strategic clarity means choosing one path and executing it well, rather than hedging with multiple approaches."
+                            },
+                            {
+                                text: "Reframe the business case around competitive positioning rather than immediate ROI—position AI as a strategic necessity",
+                                points: 10,
+                                feedback: "Exceptional strategic reframing. You're elevating the conversation from tactical ROI to strategic necessity.\n\nThe best business cases for foundational technology aren't built on immediate returns—they're built on competitive survival. Just like cloud computing, AI infrastructure becomes table stakes for competing in digital markets.\n\nYour comprehensive approach means you'll be ready when AI applications mature, while competitors scramble to build infrastructure. When regulatory complexity increases, you'll have compliant systems while others face market access barriers.\n\nThis is executive-level thinking: understanding that some investments are about future optionality, not immediate optimization. You're building AI readiness as a core organizational capability."
+                            }
+                        ]
+                    },
+                    {
+                        id: 4,
+                        scenario: "**Q3 2025 – The Talent Crisis**\n\n**The Growth Challenge:**\nYour AI infrastructure is finally generating results—3 successful applications deployed, 15% efficiency gains in targeted processes. The board wants to scale to 20 applications by year-end.\n\n**The Reality Check:**\nYour AI team is burned out. The lead data scientist just quit for a 60% salary increase at a tech startup. Two ML engineers gave notice this week.\n\n**The Market Dynamics:**\n- AI talent costs have increased 40% in 18 months\n- 53% of organizations cite AI skill shortage as primary scaling obstacle\n- Your current team of 8 can't support 20 applications\n- Hiring timelines for senior AI talent: 6-9 months\n\n**The Competing Solutions:**\nCHRO: \"Increase AI salaries by 50% and hire aggressively—whatever it takes.\"\nCTO: \"Outsource AI development to specialized consulting firms.\"\nCEO: \"Can't we just buy AI platforms instead of building everything?\"\n\n**The Strategic Dilemma:**\nScale through expensive talent acquisition, outsource core capabilities, or pivot to platform-based approaches?",
+                        question: "How do you solve the AI talent bottleneck when scaling from 3 to 20 applications?",
+                        options: [
+                            {
+                                text: "Invest heavily in talent acquisition—increase salaries 50% and hire aggressively to build world-class internal AI team",
+                                points: 6,
+                                feedback: "You're solving the immediate problem but potentially creating long-term financial strain.\n\nWhile internal AI talent provides maximum control and competitive differentiation, the escalating cost structure might not be sustainable. If market talent costs continue rising 20-40% annually, you're committing to an expensive arms race.\n\nThat said, core AI capabilities are increasingly strategic. Companies with strong internal AI teams have more flexibility and can develop proprietary advantages competitors can't buy.\n\nThe key question: Is AI central enough to your strategy to justify premium talent costs? If yes, this investment makes sense. If no, consider other approaches."
+                            },
+                            {
+                                text: "Hybrid model: Build core AI team internally while outsourcing specific application development to specialized firms",
+                                points: 10,
+                                feedback: "Smart strategic balance. You're maintaining control of core capabilities while leveraging external expertise for scaling.\n\nKeep strategic AI architecture, data governance, and high-value applications internal. Outsource routine ML development, specific use case implementations, and overflow work to trusted partners.\n\nThis approach provides flexibility—scale up external resources during growth periods, scale down during maintenance phases. It also exposes your team to external best practices without losing institutional knowledge.\n\nMIT research shows this hybrid approach has 67% success rate vs 33% for purely internal development, mainly because it combines internal strategy with external execution speed."
+                            },
+                            {
+                                text: "Pivot to AI platform strategy—buy enterprise AI platforms rather than building custom solutions",
+                                points: 7,
+                                feedback: "You're choosing speed and predictability over differentiation—a reasonable trade-off depending on your strategic goals.\n\nAI platforms can accelerate deployment and reduce talent requirements, but they limit customization and create vendor dependencies. Your competitive advantage shifts from unique AI capabilities to implementation excellence.\n\nThe risk: if competitors use similar platforms, your AI becomes commoditized. The opportunity: faster time-to-value and lower ongoing talent costs.\n\nThis works well for organizations where AI is important but not core to competitive strategy. If AI is central to your value proposition, platform approaches might limit upside potential."
+                            },
+                            {
+                                text: "Upskill existing technical staff through intensive AI training programs rather than hiring externally",
+                                points: 4,
+                                feedback: "Upskilling is cost-effective but may not solve immediate scaling challenges.\n\nTraining existing staff takes 12-18 months to develop AI expertise. Meanwhile, business demands for AI applications continue growing. You risk falling behind during the training period.\n\nAlso, upskilled staff often become attractive to external recruiters—you might train people who then leave for higher salaries elsewhere.\n\nUpskilling works best as a long-term capability building strategy, not a short-term scaling solution. Consider it complementary to other approaches, not the primary solution."
+                            }
+                        ]
+                    },
+                    {
+                        id: 5,
+                        scenario: "**Q1 2026 – The Governance Crisis**\n\n**The Success Story:**\nYour AI transformation is working. 18 applications deployed, $12M in documented cost savings, and recognition as an industry leader in AI healthcare.\n\n**The Incident:**\nAn AI diagnostic recommendation system flags 15% more cases as \"high-risk\" for minority patients compared to similar cases in white patients. A data scientist discovers this bias during routine model audits.\n\n**The Implications:**\n- Potential discrimination lawsuits from affected patients\n- Regulatory investigation under EU AI Act non-discrimination requirements\n- Media coverage: \"MedTech Global's AI System Shows Racial Bias\"\n- Internal analysis confirms: training data reflected historical healthcare disparities\n\n**The Stakeholder Reactions:**\nLegal: \"Shut down the system immediately to limit liability exposure.\"\nChief Medical Officer: \"We need to understand if this improved or worsened existing care disparities.\"\nCEO: \"How did our governance processes miss this? What else don't we know?\"\n\n**The Strategic Reality:**\nHow you handle this crisis will define your organization's AI future and industry reputation.",
+                        question: "How do you manage this AI bias crisis while preserving the business value of your AI transformation?",
+                        options: [
+                            {
+                                text: "Immediately shut down all AI diagnostic systems pending comprehensive bias audits across all applications",
+                                points: 4,
+                                feedback: "You're prioritizing risk mitigation, but potentially overreacting in ways that could destroy stakeholder confidence in your entire AI program.\n\nShutting down all systems suggests your governance processes are fundamentally broken, not that you found and are fixing a specific issue. This could trigger broader regulatory scrutiny and competitive disadvantage.\n\nThe better approach: demonstrate that your governance processes work by identifying, analyzing, and fixing the specific issue while maintaining operations of unaffected systems.\n\nCrises test whether you have mature governance or are just hoping for the best. Mature governance means systematic response, not panic shutdowns."
+                            },
+                            {
+                                text: "Keep systems operational but add human oversight requirements for all high-risk diagnoses while conducting bias analysis",
+                                points: 8,
+                                feedback: "Good balanced approach. You're addressing the immediate risk while preserving business value and demonstrating responsible AI governance.\n\nAdding human oversight for high-risk cases creates a safety net while you investigate root causes. This shows regulators and stakeholders that you can respond quickly without abandoning AI entirely.\n\nThe key is transparent communication: what you found, how you're investigating, what steps you're taking. This demonstrates that your governance processes work as intended—they detect problems and trigger appropriate responses.\n\nThis approach maintains stakeholder confidence while fixing the underlying issue. It's executive-level crisis management."
+                            },
+                            {
+                                text: "Conduct comprehensive analysis to determine if the AI bias represents improvement or deterioration from historical human decision-making patterns",
+                                points: 10,
+                                feedback: "Outstanding. You're reframing this from 'AI failure' to 'healthcare equity improvement opportunity.'\n\nThe crucial question isn't whether AI has bias—all systems reflect their training data. The question is whether AI bias is better or worse than human bias, and whether you can improve both.\n\nIf historical healthcare showed 20% disparities and AI shows 15%, that's actually progress. If AI matches human patterns exactly, you have opportunity for algorithmic improvement.\n\nThis approach demonstrates sophisticated understanding of AI governance: the goal isn't perfect AI, it's AI that improves on human performance while continuously getting better.\n\nBy conducting rigorous analysis, you're showing regulators, patients, and stakeholders that you take equity seriously and are committed to using AI to advance healthcare fairness, not just efficiency."
+                            },
+                            {
+                                text: "Quietly fix the bias issue without external disclosure to avoid negative publicity and regulatory attention",
+                                points: 1,
+                                feedback: "This is exactly the wrong approach—it violates both regulatory requirements and ethical AI principles.\n\nEU AI Act requires transparency and disclosure of AI system issues, especially those affecting fundamental rights. Hiding bias problems could result in maximum penalties (€35M or 7% of global turnover).\n\nWorse, if the bias is discovered later, the coverup will be more damaging than the original issue. This approach destroys stakeholder trust and regulatory relationships you've spent years building.\n\nMature AI governance requires transparency about problems and systematic approaches to fixing them. Hiding issues is the opposite of responsible AI leadership."
+                            }
+                        ]
+                    },
+                    {
+                        id: 6,
+                        scenario: "**Q2 2026 – The Competitive Response**\n\n**The Market Shift:**\nYour main competitor, HealthTech Innovations, just announced they're deploying \"AI-powered everything\" using the latest generative AI models. Their demos look impressive, and they're winning new client pitches.\n\n**The Customer Feedback:**\nYour largest client: \"Their AI can generate treatment summaries, automate documentation, and answer patient questions. Your systems seem outdated—just diagnostics and risk scoring.\"\n\n**The Internal Debate:**\nCTO: \"We should immediately deploy GPT-4 across all applications to match their capabilities.\"\nRisk Manager: \"Generative AI in healthcare? The liability exposure is enormous.\"\nCEO: \"We can't let them get ahead of us. What's our generative AI strategy?\"\n\n**The Technical Reality:**\nYour current AI infrastructure is designed for predictive models with structured outputs, not generative AI with free-form text. Integration would require significant architectural changes.\n\n**The Strategic Question:**\nDo you rush to match competitors' generative AI capabilities, or stick with your proven approach while they navigate uncharted regulatory and liability territory?",
+                        question: "How do you respond when competitors leapfrog your AI capabilities with unproven but impressive generative AI?",
+                        options: [
+                            {
+                                text: "Immediately launch generative AI pilot programs to match competitor capabilities and stop customer defections",
+                                points: 3,
+                                feedback: "You're responding to competitive pressure with tactical panic rather than strategic thinking.\n\nGenerative AI in healthcare carries enormous liability risks that your competitor may not fully understand yet. Rushing to deploy could expose you to regulatory violations, patient safety issues, and legal liability.\n\nRemember: being second to market with a reliable, compliant solution often beats being first with a problematic one. Let competitors be the regulatory guinea pigs while you develop safer approaches.\n\nYour proven diagnostic AI has measurable value and regulatory approval. Don't abandon working solutions for flashy demos that may not survive real-world deployment."
+                            },
+                            {
+                                text: "Develop a measured generative AI strategy focused on lower-risk applications while maintaining current diagnostic capabilities",
+                                points: 10,
+                                feedback: "Perfect strategic response. You're acknowledging competitive reality while maintaining risk discipline.\n\nStart with lower-risk generative AI applications—administrative tasks, documentation support, internal tools—where errors are less catastrophic. Build expertise and compliance frameworks before tackling high-stakes clinical applications.\n\nThis approach lets you learn generative AI technology while competitors navigate the inevitable regulatory and liability challenges of rushing to market. You'll enter high-risk generative AI applications with better governance and proven compliance.\n\nYour diagnostic AI remains a competitive advantage while you develop next-generation capabilities. This is how market leaders respond to disruptive technology: strategic adoption, not reactive deployment."
+                            },
+                            {
+                                text: "Focus on improving your current AI capabilities rather than chasing generative AI trends",
+                                points: 6,
+                                feedback: "You're maintaining focus on proven capabilities, but potentially missing a significant technological shift.\n\nImproving current AI makes sense—your diagnostic systems have measurable impact and regulatory approval. Incremental improvements can deliver significant value without new risks.\n\nHowever, if generative AI proves transformative in healthcare, you risk being left behind. The key is balancing investment: continue improving current capabilities while exploring generative AI strategically.\n\nDon't ignore technological shifts, but don't abandon working solutions either. The best approach combines strategic patience with selective innovation."
+                            },
+                            {
+                                text: "Acquire a generative AI startup to quickly obtain capabilities rather than building internally",
+                                points: 4,
+                                feedback: "Acquisition can provide quick access to capabilities, but integration challenges might outweigh benefits.\n\nGenerative AI startups typically don't have the healthcare compliance, data governance, and regulatory experience your organization has built. Integrating their technology into your compliant infrastructure could take longer than building internally.\n\nPlus, acquisitions often fail due to cultural and technical integration challenges. You might end up with expensive technology that doesn't fit your architecture or governance standards.\n\nConsider partnerships or licensing arrangements that provide access to capabilities without full integration complexity."
+                            }
+                        ]
+                    },
+                    {
+                        id: 7,
+                        scenario: "**Q3 2026 – The Board Ultimatum**\n\n**The Review:**\nAfter 30 months and $18M investment, the board conducts a comprehensive AI program review. Results are mixed: $12M in cost savings, but slower deployment than projected.\n\n**The Verdict:**\nBoard Chair: \"We've seen modest returns, but AI was supposed to be transformative. Other companies seem to be moving faster with less investment.\"\n\n**The Ultimatum:**\n\"You have 6 months to demonstrate transformative AI impact—either $25M in value creation or breakthrough capabilities that justify continued investment. Otherwise, we're scaling back to basic automation.\"\n\n**The Options:**\nFinance Team: \"Focus on high-ROI applications we can deploy quickly.\"\nStrategy Team: \"Invest in breakthrough AI research for next-generation capabilities.\"\nOperations Team: \"Use AI to automate entire business processes, not just individual tasks.\"\n\n**The Stakes:**\nYour career, the AI team's future, and the organization's technology leadership position all depend on your next 6 months.\n\n**The Strategic Decision:**\nDo you optimize for immediate measurable value, bet on breakthrough innovation, or attempt process transformation at scale?",
+                        question: "With 6 months to prove transformative AI value, how do you deploy your resources for maximum impact?",
+                        options: [
+                            {
+                                text: "Focus entirely on high-ROI applications that can demonstrate quick financial returns within 6 months",
+                                points: 6,
+                                feedback: "You're responding to board pressure with tactical execution, but potentially limiting long-term strategic potential.\n\nQuick financial returns prove AI value in terms the board understands, which may buy time for longer-term investments. This approach is politically smart and reduces personal risk.\n\nThe danger: optimizing for 6-month returns might mean choosing applications that don't leverage your strategic infrastructure investments. You could end up with point solutions rather than transformative capabilities.\n\nSometimes survival requires tactical focus over strategic vision. This approach keeps the program alive, even if it doesn't maximize potential."
+                            },
+                            {
+                                text: "Bet on breakthrough AI capabilities that could create entirely new revenue streams or competitive advantages",
+                                points: 4,
+                                feedback: "Bold vision, but extremely high-risk given the 6-month timeline and board skepticism.\n\nBreakthrough capabilities could indeed be transformative, but they're unlikely to mature and demonstrate clear value within 6 months. The board wants proof of impact, not promises of future potential.\n\nThis approach might result in impressive technology demos that don't translate to business results—exactly what got IBM Watson Health in trouble.\n\nUnless you have high confidence in a specific breakthrough that's nearly ready for deployment, this strategy could end your AI program entirely."
+                            },
+                            {
+                                text: "Redesign entire business processes around AI capabilities rather than automating existing inefficient processes",
+                                points: 10,
+                                feedback: "Exceptional strategic thinking. You're moving beyond 'AI as tool' to 'AI as business transformation engine.'\n\nProcess redesign leverages your infrastructure investments to create systemic change, not just task automation. Instead of making broken processes 10% more efficient, you're creating entirely new ways of working.\n\nThis approach can deliver transformative impact within 6 months because you're changing how the business operates, not just adding AI features to existing workflows.\n\nExamples: instead of AI-assisted diagnostics, create AI-driven patient journey management. Instead of automated reporting, create AI-powered decision support systems that change how managers work.\n\nThis is executive-level thinking: understanding that technology's greatest value comes from enabling new business models, not just improving old ones."
+                            },
+                            {
+                                text: "Create a portfolio approach combining quick wins, process improvements, and experimental capabilities",
+                                points: 3,
+                                feedback: "Portfolio approaches seem balanced but often result in unfocused execution—especially under tight timelines and resource constraints.\n\nWith 6 months to prove transformative impact, spreading resources across multiple approaches means none get sufficient focus to deliver breakthrough results. You risk achieving mediocre outcomes in all areas rather than exceptional results in one.\n\nThe board wants transformative impact, not balanced progress. Sometimes strategic clarity means making big bets rather than hedging with multiple small bets.\n\nPortfolio approaches work well for long-term capability building, but crisis situations require focused execution on your highest-probability path to success."
+                            }
+                        ]
+                    },
+                    {
+                        id: 8,
+                        scenario: "**Q4 2026 – The Scale Challenge**\n\n**The Victory:**\nYour process redesign strategy worked. AI-driven patient journey management reduced average care delivery time by 35% and increased patient satisfaction scores by 28%. The board approved expanded AI investment.\n\n**The New Challenge:**\nScaling from 5 redesigned processes to 50 across the enterprise. Different business units have different systems, cultures, and resistance to change.\n\n**The Complexity:**\nEach business unit wants custom AI solutions for their specific needs. The standardized approach that worked in healthcare may not work in insurance, pharmaceuticals, or medical devices divisions.\n\n**The Resource Reality:**\nYour AI team is now 25 people, but scaling to 50 processes could require 100+ specialists. The investment would be $40M over 18 months.\n\n**The Strategic Fork:**\nBuild a centralized AI Center of Excellence that serves all business units, or enable each unit to develop their own AI capabilities with shared infrastructure.\n\n**The Stakeholder Positions:**\nBusiness Units: \"We need AI solutions that understand our specific challenges.\"\nCTO: \"We should centralize AI expertise to avoid duplication and maintain quality.\"\nCFO: \"Can we achieve scale without proportional cost increases?\"",
+                        question: "How do you scale AI from 5 successful processes to 50 across diverse business units while managing costs and complexity?",
+                        options: [
+                            {
+                                text: "Build a centralized AI Center of Excellence that standardizes approaches across all business units",
+                                points: 8,
+                                feedback: "Strong approach for maintaining quality and avoiding duplication, but potentially missing the customization that different business units require.\n\nCentralized AI CoEs work well when business units have similar processes and data structures. They ensure consistent governance, shared best practices, and cost efficiency through resource pooling.\n\nThe risk: each business unit has different customers, regulatory requirements, and operational models. Standardized AI solutions might not deliver optimal value for specific contexts.\n\nPwC research shows successful AI CoEs focus on reusable components and frameworks rather than one-size-fits-all solutions. Consider building a center that provides shared infrastructure and governance while allowing business-unit customization."
+                            },
+                            {
+                                text: "Enable business units to develop their own AI capabilities using shared infrastructure and governance frameworks",
+                                points: 10,
+                                feedback: "Excellent scaling strategy. You're balancing autonomy with coordination—the federated model that works for large enterprise technology deployments.\n\nShared infrastructure (data platforms, AI tools, governance frameworks) provides consistency and cost efficiency. Business unit autonomy ensures solutions fit specific needs and cultures.\n\nThis approach scales more efficiently because business units can move at their own pace and prioritize their highest-value use cases. It also builds distributed AI expertise rather than bottlenecking everything through a central team.\n\nThe key success factor: strong governance frameworks that ensure compliance and quality while allowing innovation. You're providing the rails for the train rather than dictating every destination."
+                            },
+                            {
+                                text: "Prioritize the 10 highest-impact processes across business units rather than trying to scale to 50 immediately",
+                                points: 6,
+                                feedback: "Smart prioritization thinking, but potentially underutilizing the momentum and investment approval you've earned.\n\nFocusing on highest-impact processes ensures resource efficiency and maximizes ROI. However, limiting scope to 10 processes might miss opportunities for broader organizational transformation.\n\nThe board approved expanded investment based on transformative potential. Scaling back might signal lack of confidence in your ability to execute at scale.\n\nConsider this approach if resource constraints are severe, but otherwise, maintain ambitious scope while implementing strong prioritization frameworks within the larger program."
+                            },
+                            {
+                                text: "Acquire specialized AI companies for each business unit to accelerate capability development",
+                                points: 4,
+                                feedback: "Acquisitions can provide quick access to specialized expertise, but integration challenges could overwhelm the benefits.\n\nEach acquired company would have different AI technologies, development approaches, and governance standards. Integrating multiple acquisitions while maintaining your proven infrastructure could create enormous complexity.\n\nPlus, acquisition costs might exceed the $40M internal development budget when you factor in integration, retention, and cultural alignment efforts.\n\nConsider selective acquisitions for specific capabilities rather than wholesale acquisition as a scaling strategy."
+                            }
+                        ]
+                    },
+                    {
+                        id: 9,
+                        scenario: "**Q2 2027 – The Innovation Plateau**\n\n**The Success:**\n30 AI applications deployed across business units, $50M in documented value creation, and industry recognition as an AI leader. Your federated approach is working.\n\n**The Problem:**\nRecent AI deployments show diminishing returns. The easy automation opportunities are exhausted. Remaining processes are complex, edge-case heavy, or require significant organizational change.\n\n**The Market Evolution:**\nCompetitors have caught up with basic AI automation. Your early advantages are eroding. New AI technologies (agentic AI, multimodal systems) promise breakthrough capabilities, but require significant research investment.\n\n**The Strategic Inflection Point:**\nContinue optimizing current AI capabilities for incremental gains, or invest in next-generation AI research for potential transformation.\n\n**The Resource Allocation Decision:**\n$25M budget for next fiscal year. Invest in:\n- Optimizing current systems for 10-15% additional efficiency\n- Research into agentic AI systems that could automate complex decision-making\n- Developing proprietary AI models trained on your unique healthcare data\n- Building AI platform capabilities to monetize your expertise externally\n\n**The Board Question:**\n\"We've achieved good ROI from AI. What's the next chapter of our AI strategy?\"",
+                        question: "With current AI applications plateauing in value, how do you allocate resources to drive the next wave of AI transformation?",
+                        options: [
+                            {
+                                text: "Focus on optimizing current AI systems to extract maximum value from proven applications",
+                                points: 5,
+                                feedback: "You're choosing operational excellence over innovation—safe, but potentially limiting long-term competitive advantage.\n\nOptimizing current systems provides predictable returns and lower risk. The 10-15% additional efficiency gains could justify the investment, especially if competitors haven't reached your current level.\n\nHowever, this approach essentially declares victory and stops pushing boundaries. In rapidly evolving AI markets, standing still often means falling behind.\n\nConsider this approach if your organization needs to consolidate gains before taking new risks, but recognize it may not maintain competitive leadership in AI innovation."
+                            },
+                            {
+                                text: "Invest heavily in agentic AI research to automate complex decision-making processes",
+                                points: 8,
+                                feedback: "Bold strategic bet on next-generation AI capabilities. Agentic AI could indeed enable automation of complex processes that current AI can't handle.\n\nAgentic systems that can reason, plan, and take autonomous actions represent a genuine technological leap, not just incremental improvement. Success here could create sustainable competitive advantages.\n\nThe risks: agentic AI is still experimental, with significant technical and governance challenges. Healthcare applications require extreme reliability and regulatory compliance that current agentic systems may not provide.\n\nIf you have strong AI research capabilities and risk tolerance, this could be transformative. If not, it could be an expensive research project with unclear returns."
+                            },
+                            {
+                                text: "Develop proprietary AI models using your unique healthcare data as a competitive moat",
+                                points: 10,
+                                feedback: "Outstanding strategic insight. You're leveraging your greatest asset—proprietary healthcare data—to create AI capabilities competitors can't replicate.\n\nYour 30+ AI applications have generated massive datasets of real-world healthcare outcomes, patient interactions, and process optimizations. This data is exponentially more valuable than generic training data.\n\nProprietary models trained on this data could provide diagnosis accuracy, treatment recommendations, and operational insights that no competitor can match. This creates sustainable competitive moats in AI-driven healthcare.\n\nThis approach combines innovation with competitive strategy: you're not just building better AI, you're building AI that only you can build. That's executive-level strategic thinking."
+                            },
+                            {
+                                text: "Build AI platform capabilities to monetize your expertise by serving other healthcare organizations",
+                                points: 6,
+                                feedback: "Interesting diversification strategy that could create new revenue streams while leveraging your AI expertise.\n\nBuilding platforms allows you to monetize your AI development investments across multiple customers, potentially creating recurring revenue and industry leadership position.\n\nThe challenges: platform development requires different capabilities than internal AI deployment. You'd be competing with established AI platform companies while serving organizations that could become competitors.\n\nAlso, sharing AI capabilities externally might reduce your competitive advantages in your core healthcare business.\n\nConsider this if you want to become an AI technology company, not just a healthcare company that uses AI effectively."
+                            }
+                        ]
+                    },
+                    {
+                        id: 10,
+                        scenario: "**Q4 2027 – The Legacy Decision**\n\n**The Achievement:**\n3.5 years after the initial $4M investment, your AI transformation has delivered $150M in documented value, transformed operational processes across the enterprise, and established your organization as an AI industry leader.\n\n**The Succession Question:**\nThe CEO announces retirement, and you're being considered for the role. The board asks: \"What would your AI vision be as CEO, and how do we sustain this transformation beyond your leadership?\"\n\n**The Strategic Legacy Choices:**\n1. **AI-First Operating Model**: Redesign the entire organization around AI capabilities as core competitive advantage\n2. **AI Platform Company**: Transform from healthcare provider to AI-enabled platform serving the industry\n3. **Human-AI Collaboration**: Focus on augmenting human capabilities rather than replacing them\n4. **Responsible AI Leadership**: Pioneer ethical AI standards that influence industry practices\n\n**The Organizational Question:**\nYou've built AI capabilities through crisis, regulation, competition, and scaling challenges. What's the sustainable model for AI leadership that doesn't depend on heroic individual efforts?\n\n**The Industry Impact:**\nYour approach has influenced competitors and established new standards for enterprise AI deployment. How do you shape the future of AI in healthcare beyond your organization?",
+                        question: "As you transition from AI implementation to organizational leadership, what's your strategic vision for sustaining AI transformation and industry impact?",
+                        options: [
+                            {
+                                text: "Transform the organization into an AI-first company where AI capabilities drive all major business decisions",
+                                points: 8,
+                                feedback: "Bold vision that fully embraces AI as core to competitive strategy, but potentially risky if AI becomes the only lens for decision-making.\n\nAI-first organizations can achieve remarkable efficiency and innovation when AI capabilities are mature and reliable. Your 3.5-year journey has built the foundation for this transformation.\n\nThe risk: over-dependence on AI could reduce human judgment, creativity, and adaptability. Some business challenges require human insight that AI can't provide.\n\nThis approach works best when combined with strong human oversight and continuous learning from both AI successes and failures."
+                            },
+                            {
+                                text: "Build sustainable organizational capabilities and governance frameworks that enable AI innovation independent of individual leaders",
+                                points: 10,
+                                feedback: "Exceptional leadership thinking. You understand that sustainable transformation requires institutional capabilities, not individual heroics.\n\nBy building governance frameworks, training programs, and organizational processes that enable AI innovation, you create systems that survive leadership transitions and continue evolving.\n\nThis approach demonstrates the highest level of strategic maturity: understanding that the best leaders build organizations that outlast their tenure. Your AI transformation becomes embedded in organizational DNA, not dependent on personal expertise.\n\nYou're thinking like a CEO who understands that sustainable competitive advantage comes from organizational capabilities that compound over time. This is transformational leadership."
+                            },
+                            {
+                                text: "Pioneer responsible AI standards that influence industry practices and regulatory frameworks globally",
+                                points: 9,
+                                feedback: "Visionary approach that positions your organization as thought leader in responsible AI development. Your experience navigating regulation, bias issues, and governance challenges makes you credible in this role.\n\nPioneering responsible AI standards could create competitive moats—if your standards become industry norms, you have implementation advantages. It also positions your organization as trusted partner for regulators and patients.\n\nThe challenge: thought leadership requires ongoing investment in research, communication, and industry engagement that may not generate immediate ROI.\n\nThis approach works best when combined with business success—responsible AI leadership carries more weight when backed by proven results."
+                            },
+                            {
+                                text: "Focus on human-AI collaboration models that augment rather than replace human expertise in healthcare",
+                                points: 7,
+                                feedback: "Thoughtful approach that addresses legitimate concerns about AI replacing human judgment in healthcare, but potentially limits the transformational potential of AI capabilities.\n\nHuman-AI collaboration is politically safe and addresses stakeholder concerns about job displacement and AI reliability. It also leverages both AI efficiency and human creativity.\n\nHowever, this approach might not fully utilize AI capabilities you've built. Some processes benefit more from AI automation than human augmentation.\n\nThe best strategy likely combines both: AI automation for routine processes, human-AI collaboration for complex decision-making. The key is choosing the right model for each application."
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const storeProgress = (newAnswer) => {
+                const updatedAnswers = [...answers, newAnswer];
+                setAnswers(updatedAnswers);
+                localStorage.setItem('aiSimAnswers', JSON.stringify(updatedAnswers));
+            };
+
+            const clearStoredProgress = () => {
+                localStorage.removeItem('aiSimAnswers');
+            };
+
+            const sendToGoogleSheets = async (data) => {
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...data,
+                            timestamp: new Date().toISOString(),
+                            userAgent: navigator.userAgent,
+                            url: window.location.href
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        console.error('Failed to send data to Google Sheets');
+                        // Store failed events for retry
+                        const failed = JSON.parse(localStorage.getItem('aiSimFailedEvents') || '[]');
+                        failed.push({ data, timestamp: Date.now() });
+                        localStorage.setItem('aiSimFailedEvents', JSON.stringify(failed));
+                    }
+                    
+                    return response;
+                } catch (error) {
+                    console.error('Error sending to Google Sheets:', error);
+                    // Store failed events for retry
+                    const failed = JSON.parse(localStorage.getItem('aiSimFailedEvents') || '[]');
+                    failed.push({ data, timestamp: Date.now() });
+                    localStorage.setItem('aiSimFailedEvents', JSON.stringify(failed));
+                }
+            };
+
+            const handleEmailSubmit = (e) => {
+                e.preventDefault();
+                if (email) {
+                    setHasStarted(true);
+                    localStorage.setItem('aiSimEmail', email);
+                    localStorage.setItem('aiSimStartTime', new Date().toISOString());
+                    
+                    // Track simulation start
+                    sendToGoogleSheets({ email, simulation: 'AI Business Case Mastery - Enterprise Deployment', status: 'started' });
+                }
+            };
+
+            const handleAnswer = (selectedOption, questionData) => {
+                const newAnswer = {
+                    questionId: questionData.id,
+                    selectedOption: selectedOption.text,
+                    points: selectedOption.points,
+                    feedback: selectedOption.feedback,
+                    maxPoints: Math.max(...questionData.options.map(o => o.points))
+                };
+                
+                storeProgress(newAnswer);
+                
+                // Track individual answers
+                sendToGoogleSheets({
+                    email, 
+                    simulation: 'AI Business Case Mastery - Enterprise Deployment',
+                    questionId: questionData.id,
+                    selectedOption: selectedOption.text,
+                    points: selectedOption.points,
+                    maxPoints: newAnswer.maxPoints
+                });
+
+                if (currentQuestion + 1 < simulation.questions.length) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    const score = calculateScore();
+                    const totalPoints = [...answers, newAnswer].reduce((sum, answer) => sum + answer.points, 0);
+                    const maxPoints = simulation.questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0);
+                    const percentage = Math.round((totalPoints / maxPoints) * 100);
+                    const tier = getNarrative(percentage).tier;
+                    
+                    // Track completion
+                    sendToGoogleSheets({ 
+                        email, 
+                        simulation: 'AI Business Case Mastery - Enterprise Deployment',
+                        score: totalPoints,
+                        percentage,
+                        tier
+                    });
+                    
+                    setShowResults(true);
+                    localStorage.setItem('ai_business_case_simulation_attempted', 'true');
+                    clearStoredProgress(); // SNIPPET 1: Clear after completion
+                }
+            };
+
+            const calculateScore = () => {
+                const totalPoints = answers.reduce((sum, answer) => sum + answer.points, 0);
+                const maxPoints = simulation.questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0);
+                return { totalPoints, maxPoints, percentage: Math.round((totalPoints / maxPoints) * 100) };
+            };
+
+            const getNarrative = (percentage) => {
+                if (percentage >= 90) {
+                    return {
+                        title: "Strategic AI Mastery",
+                        text: "Outstanding! You demonstrated exceptional understanding of AI business case development and enterprise deployment challenges. Your decisions reflect deep strategic thinking about organizational transformation, regulatory compliance, and sustainable competitive advantage. You understand that successful AI deployment requires balancing technical capabilities with business reality, stakeholder management, and long-term value creation. This level of AI leadership thinking typically requires years of hands-on experience with enterprise technology transformation.",
+                        tier: "Strategic AI Mastery"
+                    };
+                } else if (percentage >= 75) {
+                    return {
+                        title: "Advanced AI Leadership",
+                        text: "Strong performance! You showed solid grasp of AI deployment complexities and business case fundamentals. Your decisions demonstrate good judgment on risk management, stakeholder alignment, and strategic thinking. A few choices leaned too heavily toward either pure technology focus or pure business optimization, missing the nuanced balance required for sustainable AI transformation. The best AI leaders understand that successful deployment requires simultaneous focus on technical excellence, organizational readiness, and strategic positioning.",
+                        tier: "Advanced AI Leadership"
+                    };
+                } else if (percentage >= 60) {
+                    return {
+                        title: "Developing AI Acumen",
+                        text: "You're building a solid foundation in AI business case development. You understand key concepts—AI requires organizational change, regulatory compliance matters, stakeholder buy-in is crucial—but missed opportunities to apply integrated strategic thinking. Several decisions focused on tactical responses rather than strategic transformation, or underestimated the complexity of enterprise AI deployment. Study successful AI transformations like Walmart's infrastructure-first approach and understand how regulatory frameworks create competitive moats rather than just compliance burdens.",
+                        tier: "Developing AI Acumen"
+                    };
+                } else {
+                    return {
+                        title: "Foundational Understanding",
+                        text: "You're at the beginning of your AI leadership journey. Several decisions suggest you're still learning what distinguishes successful enterprise AI deployment from failed initiatives. AI business cases require understanding of organizational change management, regulatory landscapes, competitive dynamics, and long-term value creation—not just technology implementation. Start with foundational reading: study the IBM Watson Health failure, successful AI transformations at companies like Walmart and Moderna, and regulatory frameworks like the EU AI Act. The good news: these are all learnable strategic skills. Focus on case studies of both AI successes and failures to develop better strategic intuition.",
+                        tier: "Foundational Understanding"
+                    };
+                }
+            };
+
+            // READABILITY: Helper function to format text with paragraphs
+            const formatText = (text) => {
+                if (!text) return '';
+                
+                const paragraphs = text.split('\n\n');
+                
+                return paragraphs.map((paragraph, pIndex) => {
+                    const lines = paragraph.split('\n');
+                    
+                    return h('div', { key: pIndex, className: 'paragraph-block' },
+                        lines.map((line, lIndex) => {
+                            const trimmed = line.trim();
+                            if (!trimmed) return null;
+                            
+                            // Handle emoji-prefixed lines
+                            const emojiMatch = trimmed.match(/^([🎯🏠📊🔥⚡⚠️🎊💡🚀]+)\s(.+)$/);
+                            if (emojiMatch) {
+                                return h('div', { 
+                                    key: `${pIndex}-${lIndex}`, 
+                                    className: 'emoji-line flex items-start gap-3 mb-3'
+                                }, [
+                                    h('span', { className: 'emoji text-xl flex-shrink-0' }, emojiMatch[1]),
+                                    h('span', { className: 'context-text flex-1' }, emojiMatch[2])
+                                ]);
+                            }
+                            
+                            // Handle bold headers
+                            if (trimmed.match(/^\*\*(.+)\*\*$/)) {
+                                const headerText = trimmed.replace(/^\*\*(.+)\*\*$/, '$1');
+                                return h('div', { 
+                                    key: `${pIndex}-${lIndex}`, 
+                                    className: 'text-purple-800 font-bold text-lg mb-2' 
+                                }, headerText);
+                            }
+                            
+                            // Handle quotes
+                            const quoteMatch = trimmed.match(/^"(.+)"$/);
+                            if (quoteMatch) {
+                                return h('div', { 
+                                    key: `${pIndex}-${lIndex}`, 
+                                    className: 'quote-style italic border-l-3 border-gray-300 pl-4 my-4 text-gray-600' 
+                                }, `"${quoteMatch[1]}"`);
+                            }
+                            
+                            // Regular paragraphs
+                            return h('p', { 
+                                key: `${pIndex}-${lIndex}`, 
+                                className: 'mb-3 last:mb-0' 
+                            }, trimmed);
+                        }).filter(Boolean)
+                    );
+                }).filter(Boolean);
+            };
+
+            const shareToLinkedIn = () => {
+                const score = calculateScore();
+                const narrative = getNarrative(score.percentage);
+                const currentUrl = window.location.href.split('?')[0];
+                const simulationUrl = currentUrl;
+
+                const shareText = `I completed AI Business Case Mastery Simulation today.
+
+My assessment: ${score.percentage}% - ${narrative.tier}
+
+The scenario: "${simulation.title}"
+
+Key areas evaluated:
+• Strategic thinking in AI deployment
+• Regulatory compliance and risk management  
+• Organizational change management
+• ROI measurement and business case development
+
+Working through enterprise AI deployment challenges reminded me why successful AI transformation requires balancing technical capabilities with business reality, stakeholder management, and long-term strategic thinking.
+
+Simulation link: ${simulationUrl}
+
+#AIStrategy #ArtificialIntelligence #DigitalTransformation #ProfessionalDevelopment #Leadership #EnterpriseAI #ContinuousLearning #TechnologyLeadership
+
+Connect with Mohan Simham for the complete AI business case simulation series: linkedin.com/in/mohansimham`;
+
+                // Copy to clipboard
+                navigator.clipboard.writeText(shareText).then(() => {
+                    // Show success message
+                    const successMsg = document.createElement('div');
+                    successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #7c3aed; color: white; padding: 16px 24px; border-radius: 8px; font-weight: 600; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); animation: slideIn 0.3s ease;';
+                    successMsg.innerHTML = '✅ Copied to clipboard!<br><span style="font-size: 14px; font-weight: normal;">Ready to paste on LinkedIn</span>';
+                    document.body.appendChild(successMsg);
+                    
+                    setTimeout(() => {
+                        successMsg.style.animation = 'slideOut 0.3s ease';
+                        setTimeout(() => {
+                            if (successMsg.parentElement) {
+                                document.body.removeChild(successMsg);
+                            }
+                        }, 300);
+                    }, 3000);
+                });
+
+                // Track share event in Google Sheets
+                sendToGoogleSheets({ 
+                    email, 
+                    simulation: 'AI Business Case Mastery - Enterprise Deployment',
+                    score: score.totalPoints,
+                    percentage: score.percentage,
+                    tier: narrative.tier,
+                    action: 'SHARED_ON_LINKEDIN'
+                });
+
+                setShowLinkedInModal(false);
+            };
+
+            const downloadBadge = () => {
+                const score = calculateScore();
+                const narrative = getNarrative(score.percentage);
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 1200;
+                canvas.height = 675;
+
+                // Background
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#7c3aed');
+                gradient.addColorStop(1, '#14b8a6');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Title
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 56px Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('AI Business Case Mastery', 600, 120);
+
+                // Score
+                ctx.font = 'bold 80px Arial, sans-serif';
+                ctx.fillText(`${score.percentage}%`, 600, 220);
+
+                // Tier
+                ctx.font = 'bold 36px Arial, sans-serif';
+                ctx.fillText(narrative.tier, 600, 280);
+
+                // Subtitle
+                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.fillText('Enterprise AI Deployment Fundamentals • Strategic Decision Making', 600, 480);
+
+                // Decorative elements
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(150, 150, 80, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(1050, 525, 80, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                // Name placeholder area
+                ctx.fillStyle = '#f9fafb';
+                ctx.fillRect(20, 530, canvas.width - 40, 145);
+                
+                // Divider
+                ctx.strokeStyle = '#e5e7eb';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(60, 530);
+                ctx.lineTo(1140, 530);
+                ctx.stroke();
+                
+                // Certificate text
+                ctx.fillStyle = '#9ca3af';
+                ctx.font = 'italic 18px Arial, sans-serif';
+                ctx.fillText('This certificate validates completion of a comprehensive AI business case', 600, 570);
+                ctx.fillText('assessment testing strategic thinking, risk management, and decision-making skills.', 600, 595);
+                
+                // Curator info
+                ctx.fillStyle = '#1f2937';
+                ctx.font = 'bold 22px Arial, sans-serif';
+                ctx.fillText('Curated by Mohan Simham', 600, 635);
+                
+                ctx.fillStyle = '#7c3aed';
+                ctx.font = 'bold 20px Arial, sans-serif';
+                ctx.fillText('linkedin.com/in/mohansimham', 600, 660);
+
+                // Download
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const timestamp = new Date().toISOString().split('T')[0];
+                    a.download = `AI-Business-Case-Certificate-${score.percentage}pct-${timestamp}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    // Show success message
+                    const successMsg = document.createElement('div');
+                    successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 16px 24px; border-radius: 8px; font-weight: 600; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); animation: slideIn 0.3s ease;';
+                    successMsg.innerHTML = '✅ Certificate downloaded!<br><span style="font-size: 14px; font-weight: normal;">Ready to share on LinkedIn</span>';
+                    document.body.appendChild(successMsg);
+                    
+                    setTimeout(() => {
+                        successMsg.style.animation = 'slideOut 0.3s ease';
+                        setTimeout(() => {
+                            if (successMsg.parentElement) {
+                                document.body.removeChild(successMsg);
+                            }
+                        }, 300);
+                    }, 3000);
+                });
+
+                // Track badge download event in Google Sheets
+                sendToGoogleSheets({ 
+                    email, 
+                    simulation: 'AI Business Case Mastery - Enterprise Deployment',
+                    score: score.totalPoints,
+                    percentage: score.percentage,
+                    tier: narrative.tier,
+                    action: 'DOWNLOADED_BADGE'
+                });
+            };
+
+            if (hasAttempted && !hasStarted) {
+                return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 flex items-center justify-center p-6' },
+                    h('div', { className: 'max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center' },
+                        h('div', { className: 'w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4' },
+                            h(TrophyIcon)
+                        ),
+                        h('h2', { className: 'text-2xl font-bold text-gray-900 mb-4' }, 'Already Completed!'),
+                        h('p', { className: 'text-gray-600 mb-6' }, "You've already taken this simulation. Each learner gets one attempt to ensure thoughtful decision-making and fair assessment."),
+                        h('p', { className: 'text-sm text-gray-500' }, 'Want more AI business case simulations? Follow the challenge series for upcoming modules!')
+                    )
+                );
+            }
+
+            if (!hasStarted) {
+                return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 flex items-center justify-center p-6' },
+                    h('div', { className: 'max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden' },
+                        h('div', { className: 'bg-gradient-to-r from-purple-600 to-teal-600 p-8 text-white' },
+                            h('p', { className: 'text-sm font-semibold text-purple-100 mb-3 tracking-wide uppercase' }, '✨ Master Enterprise AI Business Cases'),
+                            h('p', { className: 'text-xs text-purple-100 mb-4' }, 'Navigate real AI deployment challenges from Fortune 500 companies'),
+                            h('div', { className: 'flex items-center gap-3 mb-4' },
+                                h('div', { className: 'w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center' },
+                                    h(TrendingUpIcon)
+                                ),
+                                h('div', null,
+                                    h('div', { className: 'text-sm text-purple-100 mb-1' }, 'Module 1 • ' + simulation.year),
+                                    h('h1', { className: 'text-2xl font-bold' }, simulation.title),
+                                    h('p', { className: 'text-purple-100' }, simulation.company + ' Case Studies')
+                                )
+                            )
+                        ),
+                        h('div', { className: 'p-8' },
+                            h('p', { className: 'text-lg text-gray-700 mb-6' }, simulation.description),
+                            
+                            h('div', { className: 'bg-amber-50 border-l-4 border-amber-500 p-4 mb-6' },
+                                h('p', { className: 'text-sm text-amber-800' },
+                                    h('strong', null, '⚡ Skills Tested: '),
+                                    'Strategic AI thinking, regulatory compliance, risk management, organizational transformation, ROI measurement, and stakeholder management under pressure.'
+                                )
+                            ),
+                            h('div', { className: 'grid grid-cols-2 gap-4 mb-8' },
+                                h('div', { className: 'text-center p-4 bg-gray-50 rounded-lg' },
+                                    h(UsersIcon, { className: 'w-6 h-6 text-purple-600 mx-auto mb-2' }),
+                                    h('div', { className: 'text-sm text-gray-600' }, 'Scenarios'),
+                                    h('div', { className: 'text-xl font-bold text-gray-900' }, simulation.questions.length)
+                                ),
+                                h('div', { className: 'text-center p-4 bg-gray-50 rounded-lg' },
+                                    h(TrophyIcon, { className: 'w-6 h-6 text-purple-600 mx-auto mb-2' }),
+                                    h('div', { className: 'text-sm text-gray-600' }, 'One Attempt'),
+                                    h('div', { className: 'text-xl font-bold text-gray-900' }, 'Only')
+                                )
+                            ),
+                            h('form', { onSubmit: handleEmailSubmit, className: 'space-y-4' },
+                                h('div', null,
+                                    h('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, 'Your Email (Required for Certificate & Results)'),
+                                    h('div', { className: 'relative' },
+                                        h(MailIcon, { className: 'absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' }),
+                                        h('input', {
+                                            type: 'email',
+                                            value: email,
+                                            onChange: (e) => setEmail(e.target.value),
+                                            placeholder: 'your.email@company.com',
+                                            required: true,
+                                            className: 'w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent'
+                                        })
+                                    )
+                                ),
+                                h('button', {
+                                    type: 'submit',
+                                    className: 'w-full bg-gradient-to-r from-purple-600 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-teal-700 transition-all shadow-lg hover:shadow-xl'
+                                }, 'Start AI Business Case Challenge →'),
+                                h('p', { className: 'text-xs text-gray-500 text-center' }, "Your email is used only for results delivery and challenge notifications. No spam.")
+                            )
+                        )
+                    )
+                );
+            }
+
+            if (showResults) {
+                const score = calculateScore();
+                const narrative = getNarrative(score.percentage);
+
+                return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 p-4' },
+                    h('div', { className: 'max-w-4xl mx-auto' },
+                        h('div', { className: 'bg-white rounded-2xl shadow-xl p-8 mb-8' },
+                            h('div', { className: 'text-center mb-8' },
+                                h('div', { className: 'w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4' },
+                                    h(TrophyIcon, { className: 'w-10 h-10 text-purple-600' })
+                                ),
+                                h('h2', { className: 'text-3xl font-bold text-gray-900 mb-2' }, 'Assessment Complete!'),
+                                h('div', { className: 'text-6xl font-bold text-purple-600 mb-2' }, score.percentage + '%'),
+                                h('div', { className: 'text-xl font-semibold text-gray-700 mb-4' }, narrative.tier)
+                            ),
+
+                            h('div', { className: 'bg-purple-50 rounded-lg p-6 mb-8' },
+                                h('h3', { className: 'text-lg font-bold text-purple-900 mb-4' }, '💬 Mohan Simham\'s Assessment'),
+                                h('div', { className: 'feedback-content' }, formatText(narrative.text))
+                            ),
+
+                            h('div', { className: 'flex gap-4 justify-center mb-8' },
+                                h('button', {
+                                    onClick: () => setShowLinkedInModal(true),
+                                    className: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition-colors'
+                                }, [
+                                    h(ShareIcon, { className: 'w-5 h-5' }),
+                                    'Share on LinkedIn'
+                                ]),
+                                h('button', {
+                                    onClick: downloadBadge,
+                                    className: 'bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition-colors'
+                                }, [
+                                    h(DownloadIcon, { className: 'w-5 h-5' }),
+                                    'Download Certificate'
+                                ])
+                            )
+                        ),
+
+                        h('div', { className: 'bg-white rounded-2xl shadow-xl p-8' },
+                            h('h3', { className: 'text-2xl font-bold text-gray-900 mb-6' }, 'Detailed Analysis'),
+                            
+                            answers.map((answer, index) => {
+                                const questionData = simulation.questions[index];
+                                const userAnswer = questionData.options.find(opt => opt.text === answer.selectedOption);
+                                const correctAnswer = questionData.options.reduce((best, current) => 
+                                    current.points > best.points ? current : best
+                                );
+                                const isCorrect = userAnswer.points === correctAnswer.points;
+                                
+                                return h('div', { key: index, className: 'mb-8 pb-8 border-b border-gray-200 last:border-b-0' }, [
+                                    h('div', { className: 'mb-4' },
+                                        h('h4', { className: 'text-lg font-semibold text-gray-900 mb-2' }, 
+                                            `Scenario ${index + 1}: ${questionData.scenario.split('**')[1] || 'Business Decision'}`
+                                        ),
+                                        h('div', { className: 'analysis-scenario' }, formatText(questionData.scenario))
+                                    ),
+                                    
+                                    h('div', { className: 'mb-4' },
+                                        h('p', { className: 'font-medium text-gray-800 mb-2' }, questionData.question),
+                                        h('div', { className: 'bg-gray-50 p-4 rounded-lg mb-2' },
+                                            h('div', { className: 'flex items-center gap-2 mb-2' },
+                                                h('div', { className: `w-3 h-3 rounded-full ${isCorrect ? 'bg-green-500' : 'bg-yellow-500'}` }),
+                                                h('span', { className: 'text-sm font-medium text-gray-600' }, 'Your Choice:')
+                                            ),
+                                            h('p', { className: 'text-sm text-gray-800 font-medium mb-2' }, userAnswer.text),
+                                            h('p', { className: 'text-xs text-gray-600 font-medium' }, 
+                                                userAnswer.points + ' points'
+                                            )
+                                        ),
+                                        !isCorrect && h('div', { className: 'bg-green-50 p-4 rounded-lg' },
+                                            h('div', { className: 'flex items-center gap-2 mb-2' },
+                                                h('div', { className: 'w-3 h-3 rounded-full bg-green-500' }),
+                                                h('span', { className: 'text-sm font-medium text-green-700' }, 'Optimal Choice:')
+                                            ),
+                                            h('p', { className: 'text-sm text-gray-800 font-medium mb-2' }, correctAnswer.text),
+                                            h('p', { className: 'text-xs text-green-700 font-medium' }, 
+                                                correctAnswer.points + ' points (maximum)'
+                                            )
+                                        )
+                                    ),
+                                    
+                                    // Explanation and Learning
+                                    h('div', { className: 'bg-purple-50 border-l-4 border-purple-600 p-4 rounded-r' },
+                                        h('div', { className: 'text-xs font-bold text-purple-900 uppercase tracking-wide mb-2' }, 
+                                            '💬 Mohan Simham\'s Comments'
+                                        ),
+                                        h('div', { className: 'feedback-content' }, formatText(userAnswer.feedback)),
+                                        !isCorrect && h('div', { className: 'mt-3 pt-3 border-t border-purple-200' },
+                                            h('p', { className: 'text-xs font-semibold text-purple-800 mb-2' }, 'Why the optimal approach is better:'),
+                                            h('div', { className: 'feedback-content' }, formatText(correctAnswer.feedback))
+                                        )
+                                    )
+                                ]);
+                            })
+                        ),
+                        
+                        // Disclaimer section
+                        h('div', { className: 'bg-gray-50 rounded-2xl shadow-xl p-6 mb-6' },
+                            h('h3', { className: 'text-lg font-bold text-gray-900 mb-4' }, 'Disclaimer'),
+                            h('div', { className: 'text-sm text-gray-600 space-y-3' },
+                                h('p', null,
+                                    h('strong', null, 'Educational Use Only: '),
+                                    'This simulation is an independent educational resource created for AI business case development skills. It is not affiliated with, endorsed by, or sponsored by any specific company mentioned in the scenarios.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'Scenario Basis: '),
+                                    'The business scenarios presented are based on publicly available information about enterprise AI deployments, combined with hypothetical elements for educational purposes. Specific details, dialogue, and decision frameworks have been constructed for learning objectives and may not reflect actual internal processes or decisions made by real companies.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'No Official Representation: '),
+                                    'This content does not represent official company policies, strategies, or viewpoints. Any resemblance to actual internal decisions or processes is coincidental and used purely for educational illustration.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'Intellectual Property: '),
+                                    'Company names and related trademarks are the property of their respective owners. This educational simulation operates under fair use provisions for non-commercial educational purposes.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'Independent Assessment: '),
+                                    'All analysis, commentary, and educational frameworks are the independent work of the creator and do not reflect any official company training materials or assessments.'
+                                )
+                            )
+                        ),
+                        
+                        h('div', { className: 'text-center mt-8' },
+                            h('p', { className: 'text-gray-600 mb-2' }, 'Ready for Module 2? Continue the AI Business Case challenge series to master regulatory compliance and competitive strategy!'),
+                            h('p', { className: 'text-sm text-gray-500 mb-1' }, '© 2025 Mohan Simham. All Rights Reserved.'),
+                            h('p', { className: 'text-xs text-gray-400' }, 
+                                'Connect with the creator: ',
+                                h('a', { 
+                                    href: 'https://linkedin.com/in/mohansimham', 
+                                    target: '_blank',
+                                    className: 'text-purple-400 hover:text-purple-500 underline'
+                                }, 'LinkedIn: /mohansimham')
+                            )
+                        )
+                    )
+                );
+            }
+
+            if (showLinkedInModal) {
+                return h('div', { className: 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50' },
+                    h('div', { className: 'bg-white rounded-2xl max-w-md w-full p-6 relative' },
+                        h('button', {
+                            onClick: () => setShowLinkedInModal(false),
+                            className: 'absolute top-4 right-4 text-gray-400 hover:text-gray-600'
+                        }, h(XIcon, { className: 'w-6 h-6' })),
+                        
+                        h('div', { className: 'text-center mb-6' },
+                            h('div', { className: 'w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4' },
+                                h(ShareIcon, { className: 'w-8 h-8 text-blue-600' })
+                            ),
+                            h('h3', { className: 'text-xl font-bold text-gray-900' }, 'Share Your Results')
+                        ),
+                        
+                        h('div', null,
+                            React.createElement('div', { 
+                                dangerouslySetInnerHTML: { 
+                                    __html: `
+                                        <p style="color: #6b7280; margin-bottom: 24px; line-height: 1.6;">Share your AI business case assessment results on LinkedIn in 3 easy steps:</p>
+                                        <div style="background-color: #f9fafb; padding: 16px; border-radius: 8px; margin-bottom: 24px; border-left: 4px solid #7c3aed;">
+                                            <ol style="margin: 0; padding-left: 20px; line-height: 1.8; font-size: 14px; color: #374151;">
+                                                <li>Click "Copy Message" below</li>
+                                                <li>Open LinkedIn and create a new post</li>
+                                                <li>Paste the message and publish</li>
+                                            </ol>
+                                        </div>
+                                    `
+                                }
+                            }),
+                            
+                            h('button', {
+                                onClick: shareToLinkedIn,
+                                className: 'w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors'
+                            }, [
+                                h(CheckIcon, { className: 'w-5 h-5' }),
+                                'Copy Message'
+                            ])
+                        )
+                    )
+                );
+            }
+
+            const currentQuestionData = simulation.questions[currentQuestion];
+
+            return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 p-4' },
+                h('div', { className: 'max-w-4xl mx-auto' },
+                    h('div', { className: 'bg-white rounded-2xl shadow-xl overflow-hidden' },
+                        // Progress bar
+                        h('div', { className: 'h-2 bg-gray-200' },
+                            h('div', { 
+                                className: 'h-full bg-gradient-to-r from-purple-500 to-teal-500 progress-bar',
+                                style: { width: `${((currentQuestion + 1) / simulation.questions.length) * 100}%` }
+                            })
+                        ),
+                        
+                        // Question content
+                        h('div', { className: 'p-8' },
+                            h('div', { className: 'flex items-center justify-between mb-6' },
+                                h('div', { className: 'text-sm text-purple-600 font-semibold' }, 
+                                    `Scenario ${currentQuestion + 1} of ${simulation.questions.length}`
+                                ),
+                                h('div', { className: 'text-sm text-gray-500' }, 
+                                    `${Math.round(((currentQuestion + 1) / simulation.questions.length) * 100)}% Complete`
+                                )
+                            ),
+                            
+                            h('div', { className: 'mb-8 scenario-content' }, 
+                                formatText(currentQuestionData.scenario)
+                            ),
+                            
+                            h('h2', { className: 'text-xl font-bold text-gray-900 mb-6' }, 
+                                currentQuestionData.question
+                            ),
+                            
+                            h('div', { className: 'space-y-4' },
+                                currentQuestionData.options.map((option, index) =>
+                                    h('button', {
+                                        key: index,
+                                        onClick: () => handleAnswer(option, currentQuestionData),
+                                        className: 'w-full text-left p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors'
+                                    }, option.text)
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+
+        // Retry failed events on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const failed = JSON.parse(localStorage.getItem('aiSimFailedEvents') || '[]');
+                if (failed.length > 0) {
+                    console.log('🔄 Found failed events, will retry...');
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
