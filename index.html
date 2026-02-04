@@ -924,6 +924,177 @@
             background: #059669;
         }
         
+        .question-review-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 5px solid #e5e7eb;
+            transition: transform 0.2s ease;
+        }
+        
+        .question-review-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+        
+        .question-review-card.correct {
+            border-left-color: #10b981;
+            background: linear-gradient(to right, #f0fdf4 0%, white 50%);
+        }
+        
+        .question-review-card.partial {
+            border-left-color: #f59e0b;
+            background: linear-gradient(to right, #fffbeb 0%, white 50%);
+        }
+        
+        .question-review-card.incorrect {
+            border-left-color: #ef4444;
+            background: linear-gradient(to right, #fef2f2 0%, white 50%);
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .review-title {
+            flex: 1;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1f2937;
+            min-width: 250px;
+        }
+        
+        .review-score {
+            font-size: 1.2rem;
+            font-weight: 800;
+            padding: 8px 20px;
+            border-radius: 25px;
+            white-space: nowrap;
+        }
+        
+        .review-score.correct {
+            background: #10b981;
+            color: white;
+        }
+        
+        .review-score.partial {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .review-score.incorrect {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .review-question-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.7;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        
+        .review-your-answer {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .review-correct-answer {
+            background: #ecfdf5;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #10b981;
+        }
+        
+        .review-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .review-label.your-answer {
+            color: #6b7280;
+        }
+        
+        .review-label.correct-answer {
+            color: #059669;
+        }
+        
+        .review-text {
+            color: #374151;
+            line-height: 1.8;
+            font-size: 0.98rem;
+        }
+        
+        .mohan-commentary {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            padding: 22px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #7c3aed;
+        }
+        
+        .mohan-commentary-header {
+            font-weight: 700;
+            color: #7c3aed;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.05rem;
+        }
+        
+        .linkedin-section {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 15px;
+            padding: 35px;
+            text-align: center;
+            border-left: 5px solid #0a66c2;
+            margin: 30px 0;
+        }
+        
+        .linkedin-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #0a66c2;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .linkedin-button:hover {
+            background: #004182;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(10, 102, 194, 0.4);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -1254,6 +1425,40 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+
+                <div class="results-section">
+                    <h3 style="display: flex; align-items: center; gap: 10px;">
+                        <span>📝</span>
+                        Detailed Question Review - Correct Answers & Commentary
+                    </h3>
+                    <p style="color: #6b7280; margin-top: 10px; margin-bottom: 20px;">
+                        Review each question with the correct answer and Mohan Simham's detailed commentary
+                    </p>
+                    <div id="question-review">
+                        <!-- Dynamic content will be populated here -->
+                    </div>
+                </div>
+
+                <div class="linkedin-section">
+                    <h3 style="color: #0a66c2; display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#0a66c2">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        <span>Connect with the Creator</span>
+                    </h3>
+                    <p style="color: #374151; font-size: 1.1rem; margin-bottom: 25px; line-height: 1.8;">
+                        This simulation was curated by <strong>Mohan Simham</strong>, specializing in executive training, AI strategy, and digital transformation for business leaders.
+                    </p>
+                    <a href="https://linkedin.com/in/mohansimham" target="_blank" rel="noopener noreferrer" class="linkedin-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        <span>Connect on LinkedIn: mohansimham</span>
+                    </a>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-top: 20px;">
+                        Stay updated on executive training programs, AI insights, and business transformation strategies
+                    </p>
                 </div>
 
                 <div class="resources">
@@ -2066,7 +2271,7 @@
                 redFlagsMissed.push(...q.redFlags);
             }
             
-            // Show feedback
+            // Show feedback (without revealing correct answer)
             showFeedback(q, selectedOpt);
             
             // Update buttons
@@ -2078,16 +2283,16 @@
                 opt.style.pointerEvents = 'none';
             });
             
-            // Mark options
+            // Only mark the selected answer (don't reveal correct answer yet)
             const options = document.querySelectorAll('.option');
             options.forEach(opt => {
                 const letter = opt.querySelector('.option-letter').textContent;
-                const option = q.options.find(o => o.letter === letter);
                 
-                if (option.type === 'correct') {
-                    opt.classList.add('correct');
-                } else if (letter === selectedOption) {
-                    if (option.type === 'partial') {
+                if (letter === selectedOption) {
+                    // Mark only the selected option based on its type
+                    if (selectedOpt.type === 'correct') {
+                        opt.classList.add('correct');
+                    } else if (selectedOpt.type === 'partial') {
                         opt.classList.add('partial');
                     } else {
                         opt.classList.add('incorrect');
@@ -2100,14 +2305,14 @@
             const feedbackSection = document.getElementById('feedback-section');
             feedbackSection.className = 'feedback-section show ' + selectedOpt.type;
             
-            // Header
+            // Header with Mohan Simham's name
             let headerText = '';
             if (selectedOpt.type === 'correct') {
-                headerText = '✓ Excellent Strategic Thinking!';
+                headerText = '✓ Excellent Strategic Thinking! - Mohan Simham\'s Comments';
             } else if (selectedOpt.type === 'partial') {
-                headerText = '⚡ Partially Correct - Good Instinct, Incomplete Analysis';
+                headerText = '⚡ Partially Correct - Mohan Simham\'s Comments';
             } else {
-                headerText = '✗ Critical Insight Missed';
+                headerText = '✗ Critical Insight Missed - Mohan Simham\'s Comments';
             }
             document.getElementById('feedback-header').textContent = headerText;
             
@@ -2336,6 +2541,83 @@
             document.getElementById('missed-flags').innerHTML = uniqueMissed.length > 0
                 ? uniqueMissed.map(flag => `<li>${flag}</li>`).join('')
                 : '<li>Excellent! You caught all the critical red flags</li>';
+            
+            // Generate detailed question review
+            generateQuestionReview();
+        }
+        
+        function generateQuestionReview() {
+            const reviewContainer = document.getElementById('question-review');
+            
+            const reviewHTML = answers.map((answer, index) => {
+                const q = questions[index];
+                const selectedOpt = q.options.find(opt => opt.letter === answer.selected);
+                const correctOpt = q.options.find(opt => opt.type === 'correct');
+                
+                const scoreClass = answer.type;
+                const scoreBadge = answer.type === 'correct' ? `${answer.score}/10 ✓` : 
+                                   answer.type === 'partial' ? `${answer.score}/10 ⚡` : 
+                                   `${answer.score}/10 ✗`;
+                
+                // Determine which feedback to show
+                let feedback = '';
+                if (answer.type === 'correct') {
+                    feedback = q.feedback.correct;
+                } else if (answer.type === 'partial') {
+                    feedback = q.feedback.partial;
+                } else {
+                    feedback = q.feedback.incorrect;
+                }
+                
+                return `
+                    <div class="question-review-card ${scoreClass}">
+                        <div class="review-header">
+                            <div class="review-title">
+                                Question ${index + 1}: ${q.scenario.title}
+                            </div>
+                            <div class="review-score ${scoreClass}">
+                                ${scoreBadge}
+                            </div>
+                        </div>
+                        
+                        <div class="review-question-text">
+                            <strong>Question:</strong> ${q.question}
+                        </div>
+                        
+                        <div class="review-your-answer">
+                            <div class="review-label your-answer">
+                                ${answer.type === 'correct' ? '✓' : answer.type === 'partial' ? '⚡' : '✗'} Your Answer
+                            </div>
+                            <div class="review-text">
+                                <strong>${answer.selected}.</strong> ${selectedOpt.text}
+                            </div>
+                        </div>
+                        
+                        ${answer.type !== 'correct' ? `
+                        <div class="review-correct-answer">
+                            <div class="review-label correct-answer">
+                                ✓ Correct Answer
+                            </div>
+                            <div class="review-text">
+                                <strong>${correctOpt.letter}.</strong> ${correctOpt.text}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="mohan-commentary">
+                            <div class="mohan-commentary-header">
+                                <span>💬</span>
+                                <span>Mohan Simham's Commentary</span>
+                            </div>
+                            <div class="review-text">
+                                ${feedback}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            reviewContainer.innerHTML = reviewHTML;
         }
 
         function formatCategoryName(cat) {
