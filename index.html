@@ -1214,6 +1214,16 @@
                     </div>
                 </div>
 
+                <div class="results-section" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b;">
+                    <h3 style="color: #92400e; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.8rem;">💬</span>
+                        Mohan Simham's Executive Assessment
+                    </h3>
+                    <div id="mohan-assessment" style="background: white; padding: 25px; border-radius: 10px; margin-top: 15px; line-height: 1.9; color: #1f2937; font-size: 1.05rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <!-- Dynamic assessment will be inserted here -->
+                    </div>
+                </div>
+
                 <div class="results-section">
                     <h3>✅ Strengths Identified</h3>
                     <div id="strengths-list">
@@ -2161,6 +2171,30 @@
             }
         }
 
+        function getMohanAssessment(score) {
+            if (score >= 90) {
+                return {
+                    tier: "AI Business Case Expert",
+                    text: "Outstanding! You've demonstrated exceptional mastery of AI business case evaluation. Your decisions reveal deep strategic thinking about the realities of AI implementation - understanding that vendor claims must be challenged with data-driven skepticism, hidden costs are the norm (not the exception), and that 70% of AI failures stem from organizational resistance, not technical issues. You recognize that AI ethics isn't a philosophical luxury but a business imperative, that vendor lock-in is a predictable trap requiring upfront protection, and that scalability assumptions are often fantasy. This level of critical evaluation typically requires years of hands-on experience with enterprise AI transformations. You understand what separates the 5% of successful AI deployments from the 95% that fail: realistic planning, comprehensive change management, and honest accounting of risks and costs."
+                };
+            } else if (score >= 70) {
+                return {
+                    tier: "Strong Strategic Thinker",
+                    text: "Strong performance! You showed solid grasp of AI business case complexities and the gap between vendor promises and implementation reality. Your decisions demonstrate good judgment on risk management, cost discovery, and the human factors that make or break AI projects. A few choices leaned too heavily toward either pure technical focus or pure cost optimization, missing the nuanced balance required for sustainable AI value creation. The best AI business cases account for: 40-50% cost contingencies, comprehensive change management (not just training), ethical AI as risk management, long-term TCO including vendor dependencies, and the reality that most projects deliver 50-70% of projected benefits at 130-150% of costs. Study the patterns of AI project failures - IBM Watson Health, Amazon's hiring tool, Microsoft's Tay - to understand what distinguishes hype from sustainable value."
+                };
+            } else if (score >= 50) {
+                return {
+                    tier: "Developing Expertise",
+                    text: "You're building a foundation in AI business case evaluation. You understand key concepts - data quality matters, AI has hidden costs, change management is important - but missed opportunities to apply integrated critical thinking. Several decisions accepted vendor claims too readily, underestimated the complexity of organizational change, or focused on single dimensions (cost OR technology OR people) rather than the holistic view required for realistic business cases. Key insights to internalize: (1) Vendor demos on clean data ≠ your messy operational reality, (2) 70% of AI project costs typically emerge post-contract, (3) Human resistance causes more project failures than technology limitations, (4) AI models require continuous maintenance (not deploy-and-forget), (5) Ethical AI issues create real business risk. Study comprehensive AI case studies - both successes like Walmart's infrastructure-first approach and failures like IBM Watson Health - to develop better strategic intuition."
+                };
+            } else {
+                return {
+                    tier: "Needs Fundamental Training",
+                    text: "You're at the beginning of your AI business case evaluation journey. Several decisions suggest you're still learning to distinguish between vendor marketing and implementation reality. Effective AI business cases require skeptical evaluation of: data readiness (usually 40-60% of total cost), hidden integration and operating expenses (typically 40-50% cost overruns), organizational change requirements (not just technical deployment), technical limitations and failure modes, long-term sustainability and vendor dependencies, and ethical/regulatory risks. Start with foundational study: research why 70% of AI projects fail (hint: it's rarely the technology), understand the IBM Watson Health case study ($4B write-off due to infrastructure and adoption failures), study the difference between AI accuracy in demos vs. production, and learn why the EU AI Act and ethical frameworks are business necessities, not compliance burdens. These are all learnable skills. Focus on real-world case studies of AI successes AND failures to build critical evaluation capabilities. The executives who master business case scrutiny protect their organizations from costly failures."
+                };
+            }
+        }
+
         function showResults() {
             document.getElementById('question-screen').classList.remove('active');
             document.getElementById('results-screen').classList.add('active');
@@ -2190,6 +2224,18 @@
             }
             document.getElementById('performance-band').textContent = band;
             
+            // Get and display Mohan Simham's assessment
+            const mohanAssessment = getMohanAssessment(score);
+            document.getElementById('mohan-assessment').innerHTML = `
+                <p style="font-style: italic; color: #6b7280; margin-bottom: 20px; border-left: 4px solid #f59e0b; padding-left: 15px;">
+                    "${mohanAssessment.text}"
+                </p>
+                <p style="text-align: right; font-weight: 600; color: #92400e; margin-top: 20px;">
+                    — Mohan Simham<br>
+                    <span style="font-size: 0.9rem; font-weight: 400;">Executive Training & AI Strategy</span>
+                </p>
+            `;
+            
             // Calculate completion metrics
             const correctAnswers = answers.filter(a => a.type === 'correct').length;
             const partialAnswers = answers.filter(a => a.type === 'partial').length;
@@ -2215,137 +2261,4 @@
                 red_flags_caught: redFlagsCaught.length,
                 red_flags_missed: redFlagsMissed.length,
                 total_time_seconds: totalSessionTime,
-                average_time_per_question: averageQuestionTime,
-                total_time_minutes: Math.round(totalSessionTime / 60)
-            });
-            
-            // Analyze strengths and development areas
-            const categoryScores = {};
-            const categories = ['data', 'financial', 'human', 'technical', 'scalability', 'ethical', 'vendor', 'risk', 'strategic'];
-            
-            categories.forEach(cat => {
-                const catAnswers = answers.filter(a => {
-                    const q = questions.find(qu => qu.id === a.questionId);
-                    return q.category === cat;
-                });
-                if (catAnswers.length > 0) {
-                    const catScore = catAnswers.reduce((sum, a) => sum + a.score, 0);
-                    const maxScore = catAnswers.length * 10;
-                    categoryScores[cat] = (catScore / maxScore) * 100;
-                }
-            });
-            
-            // Strengths (>= 70%)
-            const strengths = Object.entries(categoryScores)
-                .filter(([cat, score]) => score >= 70)
-                .sort((a, b) => b[1] - a[1]);
-            
-            const strengthsHTML = strengths.length > 0 
-                ? strengths.map(([cat, sc]) => `
-                    <div class="strength-item">
-                        <div>
-                            <strong>${formatCategoryName(cat)}</strong>: ${sc.toFixed(0)}% mastery
-                        </div>
-                    </div>
-                `).join('')
-                : '<div class="strength-item"><div>Continue building expertise across all dimensions</div></div>';
-            
-            document.getElementById('strengths-list').innerHTML = strengthsHTML;
-            
-            // Development areas (< 70%)
-            const development = Object.entries(categoryScores)
-                .filter(([cat, score]) => score < 70)
-                .sort((a, b) => a[1] - b[1]);
-            
-            const developmentHTML = development.length > 0
-                ? development.map(([cat, sc]) => `
-                    <div class="development-item">
-                        <div>
-                            <strong>${formatCategoryName(cat)}</strong>: ${sc.toFixed(0)}% - focus area for improvement
-                        </div>
-                    </div>
-                `).join('')
-                : '<div class="development-item"><div>Excellent performance across all categories!</div></div>';
-            
-            document.getElementById('development-list').innerHTML = developmentHTML;
-            
-            // Red flags summary (deduplicate)
-            const uniqueCaught = [...new Set(redFlagsCaught)].slice(0, 8);
-            const uniqueMissed = [...new Set(redFlagsMissed)].slice(0, 8);
-            
-            document.getElementById('caught-flags').innerHTML = uniqueCaught.length > 0
-                ? uniqueCaught.map(flag => `<li>${flag}</li>`).join('')
-                : '<li>Review the questions to identify key red flags</li>';
-            
-            document.getElementById('missed-flags').innerHTML = uniqueMissed.length > 0
-                ? uniqueMissed.map(flag => `<li>${flag}</li>`).join('')
-                : '<li>Excellent! You caught all the critical red flags</li>';
-        }
-
-        function formatCategoryName(cat) {
-            const names = {
-                data: 'Data Quality & Preparation',
-                financial: 'Financial Analysis',
-                human: 'Change Management & Human Factors',
-                technical: 'Technical Risk Assessment',
-                scalability: 'Scalability Planning',
-                ethical: 'Ethical AI & Bias',
-                vendor: 'Vendor Management',
-                risk: 'Cybersecurity & Risk',
-                strategic: 'Strategic Thinking'
-            };
-            return names[cat] || cat;
-        }
-
-        function shareLinkedIn() {
-            // Track LinkedIn share
-            trackEvent('social_share', {
-                event_category: 'Social',
-                event_label: 'LinkedIn Share',
-                platform: 'LinkedIn',
-                final_score: score,
-                performance_band: document.getElementById('performance-band').textContent
-            });
-            
-            const text = `I just completed the AI Business Case Mastery simulation and scored ${score}/100! This executive-level assessment tests critical thinking on AI investments, hidden costs, risks, and human factors. #AIStrategy #DigitalTransformation #ExecutiveLeadership`;
-            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${encodeURIComponent(text)}`;
-            window.open(url, '_blank', 'width=600,height=400');
-        }
-
-        function downloadResults() {
-            // Track PDF download
-            trackEvent('download_results', {
-                event_category: 'Engagement',
-                event_label: 'PDF Download',
-                final_score: score,
-                performance_band: document.getElementById('performance-band').textContent
-            });
-            
-            window.print();
-        }
-
-        function restartSimulation() {
-            // Track restart
-            trackEvent('simulation_restarted', {
-                event_category: 'Engagement',
-                event_label: 'Retake Simulation',
-                previous_score: score,
-                previous_performance: document.getElementById('performance-band').textContent
-            });
-            
-            currentQuestion = 0;
-            score = 0;
-            selectedOption = null;
-            answers = [];
-            redFlagsCaught = [];
-            redFlagsMissed = [];
-            
-            document.getElementById('results-screen').classList.remove('active');
-            document.getElementById('intro-screen').classList.add('active');
-            
-            document.getElementById('progress-fill').style.width = '0%';
-            document.getElementById('progress-text').textContent = '0 of 10 Questions';
-        }
-    </script>
-</body>
-</html>
+                average_time_per_question
