@@ -1947,11 +1947,18 @@
             
             document.getElementById('intro-screen').classList.remove('active');
             document.getElementById('question-screen').classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
             loadQuestion();
         }
 
         function loadQuestion() {
             const q = questions[currentQuestion];
+            
+            // Scroll to top of page to show question
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             
             // Start question timer
             questionStartTime = Date.now();
@@ -2165,6 +2172,9 @@
                 });
                 
                 loadQuestion();
+                
+                // Scroll to top to see new question
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 // Show results
                 showResults();
@@ -2261,4 +2271,137 @@
                 red_flags_caught: redFlagsCaught.length,
                 red_flags_missed: redFlagsMissed.length,
                 total_time_seconds: totalSessionTime,
-                average_time_per_question
+                average_time_per_question: averageQuestionTime,
+                total_time_minutes: Math.round(totalSessionTime / 60)
+            });
+            
+            // Analyze strengths and development areas
+            const categoryScores = {};
+            const categories = ['data', 'financial', 'human', 'technical', 'scalability', 'ethical', 'vendor', 'risk', 'strategic'];
+            
+            categories.forEach(cat => {
+                const catAnswers = answers.filter(a => {
+                    const q = questions.find(qu => qu.id === a.questionId);
+                    return q.category === cat;
+                });
+                if (catAnswers.length > 0) {
+                    const catScore = catAnswers.reduce((sum, a) => sum + a.score, 0);
+                    const maxScore = catAnswers.length * 10;
+                    categoryScores[cat] = (catScore / maxScore) * 100;
+                }
+            });
+            
+            // Strengths (>= 70%)
+            const strengths = Object.entries(categoryScores)
+                .filter(([cat, score]) => score >= 70)
+                .sort((a, b) => b[1] - a[1]);
+            
+            const strengthsHTML = strengths.length > 0 
+                ? strengths.map(([cat, sc]) => `
+                    <div class="strength-item">
+                        <div>
+                            <strong>${formatCategoryName(cat)}</strong>: ${sc.toFixed(0)}% mastery
+                        </div>
+                    </div>
+                `).join('')
+                : '<div class="strength-item"><div>Continue building expertise across all dimensions</div></div>';
+            
+            document.getElementById('strengths-list').innerHTML = strengthsHTML;
+            
+            // Development areas (< 70%)
+            const development = Object.entries(categoryScores)
+                .filter(([cat, score]) => score < 70)
+                .sort((a, b) => a[1] - b[1]);
+            
+            const developmentHTML = development.length > 0
+                ? development.map(([cat, sc]) => `
+                    <div class="development-item">
+                        <div>
+                            <strong>${formatCategoryName(cat)}</strong>: ${sc.toFixed(0)}% - focus area for improvement
+                        </div>
+                    </div>
+                `).join('')
+                : '<div class="development-item"><div>Excellent performance across all categories!</div></div>';
+            
+            document.getElementById('development-list').innerHTML = developmentHTML;
+            
+            // Red flags summary (deduplicate)
+            const uniqueCaught = [...new Set(redFlagsCaught)].slice(0, 8);
+            const uniqueMissed = [...new Set(redFlagsMissed)].slice(0, 8);
+            
+            document.getElementById('caught-flags').innerHTML = uniqueCaught.length > 0
+                ? uniqueCaught.map(flag => `<li>${flag}</li>`).join('')
+                : '<li>Review the questions to identify key red flags</li>';
+            
+            document.getElementById('missed-flags').innerHTML = uniqueMissed.length > 0
+                ? uniqueMissed.map(flag => `<li>${flag}</li>`).join('')
+                : '<li>Excellent! You caught all the critical red flags</li>';
+        }
+
+        function formatCategoryName(cat) {
+            const names = {
+                data: 'Data Quality & Preparation',
+                financial: 'Financial Analysis',
+                human: 'Change Management & Human Factors',
+                technical: 'Technical Risk Assessment',
+                scalability: 'Scalability Planning',
+                ethical: 'Ethical AI & Bias',
+                vendor: 'Vendor Management',
+                risk: 'Cybersecurity & Risk',
+                strategic: 'Strategic Thinking'
+            };
+            return names[cat] || cat;
+        }
+
+        function shareLinkedIn() {
+            // Track LinkedIn share
+            trackEvent('social_share', {
+                event_category: 'Social',
+                event_label: 'LinkedIn Share',
+                platform: 'LinkedIn',
+                final_score: score,
+                performance_band: document.getElementById('performance-band').textContent
+            });
+            
+            const text = `I just completed the AI Business Case Mastery simulation and scored ${score}/100! This executive-level assessment tests critical thinking on AI investments, hidden costs, risks, and human factors. #AIStrategy #DigitalTransformation #ExecutiveLeadership`;
+            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'width=600,height=400');
+        }
+
+        function downloadResults() {
+            // Track PDF download
+            trackEvent('download_results', {
+                event_category: 'Engagement',
+                event_label: 'PDF Download',
+                final_score: score,
+                performance_band: document.getElementById('performance-band').textContent
+            });
+            
+            window.print();
+        }
+
+        function restartSimulation() {
+            // Track restart
+            trackEvent('simulation_restarted', {
+                event_category: 'Engagement',
+                event_label: 'Retake Simulation',
+                previous_score: score,
+                previous_performance: document.getElementById('performance-band').textContent
+            });
+            
+            currentQuestion = 0;
+            score = 0;
+            selectedOption = null;
+            answers = [];
+            redFlagsCaught = [];
+            redFlagsMissed = [];
+            
+            document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('intro-screen').classList.add('active');
+            
+            document.getElementById('progress-fill').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0 of 10 Questions';
+        }
+    </script>
+</body>
+</html>
