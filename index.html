@@ -285,6 +285,106 @@
             border-top: 2px solid #10b981;
         }
         
+        /* Email Collection Form */
+        .email-collection {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #2563eb;
+            text-align: center;
+        }
+        
+        .email-collection h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .email-collection p {
+            color: #4b5563;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .email-form {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .email-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .email-input:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .email-submit {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .email-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .email-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .email-message.success {
+            background: #dcfce7;
+            color: #065f46;
+            border: 1px solid #10b981;
+            display: block;
+        }
+        
+        .email-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #dc2626;
+            display: block;
+        }
+        
+        .content-locked {
+            display: none;
+        }
+        
+        .content-unlocked {
+            display: block;
+        }
+        
         .learning-objectives {
             background: #f9fafb;
             border-radius: 15px;
@@ -1177,6 +1277,26 @@
         <div class="content">
             <!-- Intro Screen -->
             <div class="intro-screen active" id="intro-screen">
+                <!-- Email Collection Form -->
+                <div class="email-collection">
+                    <h3>📧 Get Started with AI Business Case Mastery</h3>
+                    <p>Enter your email to begin the simulation and track your progress</p>
+                    <form class="email-form" id="emailForm" onsubmit="submitEmail(event)">
+                        <input 
+                            type="email" 
+                            id="userEmail" 
+                            class="email-input" 
+                            placeholder="your.email@company.com" 
+                            required
+                        >
+                        <button type="submit" class="email-submit" id="emailSubmitBtn">
+                            Start Simulation
+                        </button>
+                    </form>
+                    <div class="email-message" id="emailMessage"></div>
+                </div>
+
+                <div class="content-locked" id="simulationContent">
                 <div class="company-profile">
                     <h2>📊 Company Profile: TechManufacture Solutions Inc.</h2>
                     <div class="profile-grid">
@@ -1349,6 +1469,7 @@
                         <span>Connect: mohansimham</span>
                     </a>
                 </div>
+                </div> <!-- End of content-locked div -->
             </div>
 
             <!-- Question Screen -->
@@ -2172,6 +2293,127 @@
         let sessionStartTime = Date.now();
         let questionStartTime = null;
         let questionTimes = [];
+        
+        // Email tracking
+        let userEmail = '';
+
+        // Submit email to Google Sheets
+        async function submitEmail(event) {
+            event.preventDefault();
+            
+            const emailInput = document.getElementById('userEmail');
+            const submitBtn = document.getElementById('emailSubmitBtn');
+            const messageDiv = document.getElementById('emailMessage');
+            
+            const email = emailInput.value.trim();
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageDiv.className = 'email-message error';
+                messageDiv.textContent = 'Please enter a valid email address';
+                return;
+            }
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Store email for tracking
+            userEmail = email;
+            
+            // Google Sheets Web App URL - REPLACE THIS WITH YOUR ACTUAL GOOGLE SHEETS WEB APP URL
+            const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE';
+            
+            // Prepare data
+            const data = {
+                email: email,
+                timestamp: new Date().toISOString(),
+                simulationType: 'AI Business Case Mastery',
+                userAgent: navigator.userAgent,
+                referrer: document.referrer || 'Direct'
+            };
+            
+            try {
+                // Submit to Google Sheets
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Sheets Web Apps
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                // Track email submission
+                trackEvent('email_submitted', {
+                    event_category: 'User Registration',
+                    event_label: 'Simulation Start',
+                    user_email_domain: email.split('@')[1]
+                });
+                
+                // Show success message
+                messageDiv.className = 'email-message success';
+                messageDiv.textContent = '✓ Email saved! Loading simulation...';
+                
+                // Unlock the simulation content
+                setTimeout(() => {
+                    document.querySelector('.email-collection').style.display = 'none';
+                    document.getElementById('simulationContent').classList.remove('content-locked');
+                    document.getElementById('simulationContent').classList.add('content-unlocked');
+                    // Smooth scroll to content
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error submitting email:', error);
+                
+                // Still allow user to proceed even if submission fails
+                messageDiv.className = 'email-message success';
+                messageDiv.textContent = '✓ Loading simulation...';
+                
+                // Track error
+                trackEvent('email_submission_error', {
+                    event_category: 'Error',
+                    event_label: 'Email Form',
+                    error_message: error.message
+                });
+                
+                setTimeout(() => {
+                    document.querySelector('.email-collection').style.display = 'none';
+                    document.getElementById('simulationContent').classList.remove('content-locked');
+                    document.getElementById('simulationContent').classList.add('content-unlocked');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Start Simulation';
+            }
+        }
+        
+        // Submit completion data to Google Sheets
+        async function submitCompletionData(completionData) {
+            // Google Sheets Web App URL - REPLACE THIS WITH YOUR ACTUAL GOOGLE SHEETS WEB APP URL
+            const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE';
+            
+            try {
+                await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ...completionData,
+                        type: 'completion' // To differentiate from initial email submission
+                    })
+                });
+                
+                console.log('Completion data submitted to Google Sheets');
+            } catch (error) {
+                console.error('Error submitting completion data:', error);
+            }
+        }
 
         // Initialize
         function startSimulation() {
@@ -2511,6 +2753,23 @@
                 average_time_per_question: averageQuestionTime,
                 total_time_minutes: Math.round(totalSessionTime / 60)
             });
+            
+            // Submit completion data to Google Sheets if user email is available
+            if (userEmail) {
+                submitCompletionData({
+                    email: userEmail,
+                    completionTimestamp: new Date().toISOString(),
+                    finalScore: score,
+                    performanceBand: bandLevel,
+                    correctAnswers: correctAnswers,
+                    partialAnswers: partialAnswers,
+                    incorrectAnswers: incorrectAnswers,
+                    redFlagsCaught: redFlagsCaught.length,
+                    redFlagsMissed: redFlagsMissed.length,
+                    totalTimeMinutes: Math.round(totalSessionTime / 60),
+                    averageTimePerQuestion: averageQuestionTime
+                });
+            }
             
             // Analyze strengths and development areas
             const categoryScores = {};
